@@ -19,6 +19,7 @@
     "no-unused-expressions": [2, { "allowShortCircuit": true, "allowTernary": true }],
     "no-underscore-dangle":  [2, { "allowAfterThis": true, "allow": ["_appStaticModels"] }],
     "function-paren-newline": ["error", "consistent"],
+    "react/forbid-prop-types": [2, { "forbid": ["any"], "checkContextTypes": false, "checkChildContextTypes": false }],
 
     "wrap-iife":                   0,
     "func-names":                  0,

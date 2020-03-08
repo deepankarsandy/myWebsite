@@ -7,6 +7,7 @@ module.exports = {
   context: __dirname,
   entry:   {
     home:        ['@babel/polyfill', './ui/js/pages/home.jsx'],
+    about:       ['@babel/polyfill', './ui/js/pages/about.jsx'],
   },
 
   output:  {
@@ -38,13 +39,6 @@ module.exports = {
   //     Router:    '../utils/router',
   //   })
   // ],
-
-  devServer: {
-    contentBase: path.join(__dirname, 'public/'),
-    port:        3000,
-    publicPath:  'http://localhost:3000/app/assets/javascripts/',
-    hotOnly:     true
-  },
 
   module: {
     rules: [

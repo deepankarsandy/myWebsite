@@ -1,5 +1,5 @@
 {
-  "name": "project-sms",
+  "name": "bio-website",
   "version": "1.0.0",
   "description": "Bio Website",
   "author": "Deepankar Sandhibigraha",
@@ -11,7 +11,13 @@
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
-    "react-dom": "^16.13.0"
+    "react-dom": "^16.13.0",
+    "express": "^4.17.1",
+    "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
+    "express-react-views": "^0.11.0",
+    "http-errors": "^1.7.3",
+    "morgan": "^1.9.1"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
@@ -38,6 +44,9 @@
     "webpack-dev-server": "^3.10.3"
   },
   "scripts": {
-    "start": "webpack-dev-server -d --config webpack.config.js --content-base public/ --progress --colors"
+    "start": "node ./app/config/www"
+  },
+  "engines": {
+    "node": ">=13.7"
   }
 }

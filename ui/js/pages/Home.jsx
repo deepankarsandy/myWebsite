@@ -1,17 +1,19 @@
 
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
-import '../../styles/home.css';
 
-class App extends PureComponent{
+class Home extends PureComponent{
   render(){
     return (
       <div className="home">
-        <h1> Hello, World! </h1>
-        <h2> This is Sandy! </h2>
+        <h1> Home </h1>
+        <h2> Welcome ! </h2>
+        <h2>
+          <a href="http://localhost:3000/about">About</a>
+        </h2>
       </div>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Home />, document.getElementById('root'));
