@@ -1,0 +1,46 @@
+{
+  "parser":  "babel-eslint",
+  "extends": "airbnb",
+
+  "parserOptions": {
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "arrowFunctions":               true,
+      "jsx":                          true
+    }
+  },
+
+  "rules": {
+    "new-cap":               [2, { "capIsNewExceptions": ["URI", "RegisterEffect"] }],
+    "no-multi-spaces":       [2, { "exceptions": { "Property": true, "VariableDeclarator": true, "BinaryExpression": true, "ImportDeclaration": true }}],
+    "key-spacing":           [2, { "beforeColon": false, "afterColon": true, "mode": "minimum", "align": "value" }],
+    "comma-dangle":          [2, "only-multiline"],
+    "space-before-blocks":   [2, "never"],
+    "no-unused-expressions": [2, { "allowShortCircuit": true, "allowTernary": true }],
+    "no-underscore-dangle":  [2, { "allowAfterThis": true, "allow": ["_appStaticModels"] }],
+    "function-paren-newline": ["error", "consistent"],
+
+    "wrap-iife":                   0,
+    "func-names":                  0,
+    "space-before-function-paren": 0,
+    "strict":                      0
+  },
+
+  "env": {
+    "browser": true,
+    "es6":     true,
+    "jest":    true
+  },
+
+  "plugins": [
+    "react",
+    "class-property"
+  ],
+
+  "settings": {
+    "import/parser":     "babel-eslint",
+    "import/resolve":    {
+      "moduleDirectory": ["node_modules", "src"]
+    }
+  }
+}

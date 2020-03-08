@@ -1,0 +1,71 @@
+{
+  // Enforcing Options: set to turn on more warning.
+  "bitwise":     true,  // Prohibit use of bitwise operators &, |, ^, ...
+  "camelcase":   true,  // Variables must be in camelCase or UPPER_CASE with underscores.
+  "curly":       true,  // Always require curly braces.
+  "eqeqeq":      true,  // Prohibits the use of == and != in favor of === and !==
+  "es3":         false, // Check for compatibility with older ECMAScript-3.
+  "forin":       true,  // Require 'for in' loops to filter object's items. Otherwise they iterate over inherited properties leading to unexpected behavior.
+  "freeze":      true,  // Prohibits overwriting native objects: Array, Date, ...
+  "immed":       true,  // Prohibits use of immediate functions without wrapping them in parenthesis.
+  "indent":      2,
+  "latedef":     true,  // Prohibits use of a variable before it's defined.
+  "newcap":      true,  // Forces capitalizing constructor functions.
+  "noarg":       true,  // Prohibits use of arguments.caller/.callee. They have been deprecated. ES-5 forbids them in strict mode.
+  "noempty":     true,  // Warn about empty blocks.
+  "nonbsp":       true,  // Warn about non-breaking whitespace.
+  "nonew":       true,  // Prohibits use of constructors for side-effects. => calling new MyFunc() without an assignment.
+  "plusplus":    false, // Prohibits use of unary increment and decrement operators.
+  "quotmark":    "single",  // Enforce consistency of quotation marks. => true/"single"/"double".
+  "undef":       true,  // Prohibits use of explicitly undeclared variables.
+  "unused":      true,  // Warn when variables are unused.
+  "strict":      true,  // Require all functions run in ES-5 strict mode.
+  "maxparams":   false, // Set the max number of formal params per function.
+  "maxdepth":    3,     // Set the max depth of blocks per function.
+  "maxstatements": false, // Set the max number of statements per function.
+  "maxcomplexity": false, // Set cyclomatic complexity thru-out the code.
+  "maxlen":      256,  // Set the max length of a line.
+  "maxerr":      10000, // Max warning before giving up. => Default is 50.
+
+  // Relaxing Options: set to produce less warnings.
+  "asi":        false,  // Suppress warnings about missing semicolons.
+  "boss":       false,  // Suppress warnings about the use of assignments where comparison is expected.
+  "debug":      false,  // Suppress warnings about 'debugger' statements.
+  "eqnull":     false,  // Suppress warnings about '== null' comparisons. Useful when checking for null or undefined.
+  "esnext":     true,   // Use ES-6 syntax.
+  "evil":       false,  // Suppress warning about use of 'eval'
+  "expr":       false,  // Suppress warning about expressions where assignment/function calls are expected.
+  "funcscope":  false,  // Suppress warning about declaring variables inside control structures.
+  "globalstrict": false, // Suppress warning about use of global strict mode. => This can break third-party widgets.
+  "iterator":   false,  // Suppress warning about __iterator__ property. => Not supported by all browsers.
+  "lastsemic":  false,  // Suppress warning about missing semicolons, but only when it's omitted for the last statement in a oneliner block.
+  "laxbreak":   false,  // Suppress warning about unsafe line breakings.
+  "laxcomma":   false,  // Suppress warning about comma-first coding style.
+  "loopfunc":   false,  // Suppress warning about functions inside loops.
+  "moz":        false,  // Use Mozilla JS extensions.
+  "multistr":   false,  // Suppress warnings about multi-line strings.
+  "notypeof":   false,  // Suppress warnings about invalid typeof operator values.
+  "proto":      false,  // Suppress warnings about script-tagged URLs.
+  "shadow":     false,  // Suppress warnings about variable shadowing.
+  "sub":        false,  // Suppress warnings about using [] when dot notation can be used.
+  "supernew":   false,  // Suppress warnings about "weird" constructors. => new function () { ... } or new Object;
+  "validthis":  false,  // Suppress warnings about possible strict violations when in strict mode and a 'this' is used in a non-constructor function.
+  "noyield":    false,  // Suppress warnings about generator functions with no 'yield' statement.
+
+  // Environment: tell which predefined globals are present.
+  "browser":    true,  // Globals: document, browser, FileReader, ...
+  "couch":      false, // Globals exposed by CouchDB.
+  "devel":      true,  // Globals: console, alert...
+  "dojo":       false,
+  "jquery":     true,
+  "mootools":   false,
+  "node":       false,
+  "nonstandard": false, // Non-std but popular globals: escape, unescape, ...
+  "phantom":    false,
+  "prototypejs": false,
+  "rhino":      false,
+  "worker":     false,  // Globals for WebWorkers.
+  "wsh":        false,
+  "yui":        false
+
+}
