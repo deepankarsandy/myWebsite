@@ -1,40 +1,66 @@
-
 const path = require('path');
 const webpack = require('webpack');
 
 module.exports = {
-  entry:  './src/index.jsx',
-  mode:   'development',
+  mode:    'development',
+  devtool: 'inline-source-map',
+  context: __dirname,
+  entry:   {
+    home:        ['@babel/polyfill', './ui/js/pages/home.jsx'],
+  },
+
+  output:  {
+    path:       path.join(__dirname, 'app', 'assets', 'javascripts'),
+    filename:   '[name]_bundle.js',
+    publicPath: '/assets',
+  },
+
+  resolve: {
+    // extensions that require will resolve.
+    extensions: ['.js', '.jsx', '.js.jsx'],
+    // directories to search in for files to resolve.
+    modules:    ['node_modules'],
+    alias:      {
+      modernizr$: path.resolve(__dirname, '.modernizrrc')
+    }
+  },
+
+  externals: {
+    // $:         'jquery',
+    // jQuery:    'jquery',
+    // Modernizr: 'Modernizr',
+    // History:   'History',
+    // enquire:   'enquire',
+  },
+
+  // plugins: [
+  //   new webpack.ProvidePlugin({
+  //     Router:    '../utils/router',
+  //   })
+  // ],
+
+  devServer: {
+    contentBase: path.join(__dirname, 'public/'),
+    port:        3000,
+    publicPath:  'http://localhost:3000/app/assets/javascripts/',
+    hotOnly:     true
+  },
+
   module: {
     rules: [
       {
-        test:    /\.(js|jsx)$/,
-        exclude: /(node_modules|bower_components)/,
-        loader:  'babel-loader',
-        options: { presets: ['@babel/env'] }
+        test:    /\.jsx?$/,
+        use:     'babel-loader',
+        exclude: /(node_modules|bower_components)/
+      },
+      {
+        test:   /\.modernizrrc$/,
+        use:    'modernizr-loader'
       },
       {
         test: /\.css$/,
         use:  ['style-loader', 'css-loader']
       }
     ]
-  },
-  resolve: {
-    // extensions that require will resolve.
-    extensions: ['.js', '.jsx', '.js.jsx'],
-    // directories to search in for files to resolve.
-    modules:    ['node_modules', 'bower_components'],
-  },
-  output:  {
-    path:       path.resolve(__dirname, 'dist/'),
-    publicPath: '/dist/',
-    filename:   'bundle.js'
-  },
-  devServer: {
-    contentBase: path.join(__dirname, 'public/'),
-    port:        3000,
-    publicPath:  'http://localhost:3000/dist/',
-    hotOnly:     true
-  },
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  }
 };

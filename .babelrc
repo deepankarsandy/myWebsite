@@ -3,5 +3,9 @@
     ["@babel/env", { "modules": "commonjs" }],
     "@babel/preset-react"
   ],
-  "plugins": []
+  "plugins": [
+    "@babel/plugin-transform-runtime",
+    "@babel/plugin-proposal-class-properties",
+    "add-module-exports"
+  ]
 }
