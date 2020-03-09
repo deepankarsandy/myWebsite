@@ -1,0 +1,26 @@
+.logo {
+  .square {
+    height: 3rem;
+    width: 3rem;
+    border: solid;
+    border-color: #555;
+    border-width: 1px;
+  }
+};
+
+.rotate-45 {
+  transform: rotate(45deg);
+  margin: 1rem;
+
+  .straight {
+    transform: rotate(-45deg);
+  }
+};
+
+.btn {
+  margin: .2rem;
+
+  :hover {
+    cursor: pointer;
+  }
+}
