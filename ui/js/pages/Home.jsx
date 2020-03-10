@@ -30,8 +30,10 @@ class Home extends PureComponent{
         <div className="hero-foot">
           <div className="level">
             <div className="level-left">
-              <div className="level-item button is-light is-outlined">
-                <span>See more</span>
+              <div className="level-item">
+                <div className="button is-light is-outlined">
+                  <span>See more</span>
+                </div>
               </div>
             </div>
             <div className="level-item">
@@ -55,8 +57,10 @@ class Home extends PureComponent{
               </span>
             </div>
             <div className="level-right">
-              <div className="level-item button is-light is-outlined">
-                <span>Hire me</span>
+              <div className="level-item">
+                <div className="button is-light is-outlined">
+                  <span>Hire me</span>
+                </div>
               </div>
             </div>
           </div>

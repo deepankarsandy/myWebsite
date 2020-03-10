@@ -1,7 +1,0 @@
-{
-"version": 3,
-"mappings": "AAAA,KAAM;EACJ,OAAO,EAAE,IAAI;EACb,WAAW,EAAE,4BAA4B",
-"sources": ["../../../ui/styles/_base.scss"],
-"names": [],
-"file": "about.css"
-}

@@ -1,19 +1,34 @@
-.logo {
-  .square {
-    height: 3rem;
-    width: 3rem;
-    border: solid;
-    border-color: #555;
-    border-width: 1px;
-  }
+.square {
+  border: solid;
+  border-color: #555;
+  border-width: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5rem;
+  width: 5rem;
+};
+
+.square.is-small {
+  height: 3rem;
+  width: 3rem;
+};
+
+.square.is-large {
+  height: 7rem;
+  width: 7rem;
 };
 
 .rotate-45 {
   transform: rotate(45deg);
-  margin: 1rem;
+  margin: 1.5rem;
 
   .straight {
     transform: rotate(-45deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px 0 0 -6px;
   }
 };
 
