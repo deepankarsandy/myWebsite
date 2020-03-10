@@ -18,7 +18,7 @@ class Logo extends PureComponent{
     };
     const sStyle = {
       margin: size === 'small' ? '-5px -25px 0 0' : '-5px -35px 0 0'
-    }
+    };
 
     return (
       <div className={classes}>

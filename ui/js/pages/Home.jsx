@@ -1,7 +1,11 @@
 
 import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
+
 import Logo from '../components/logo';
+import SMButtons from '../components/sm_buttons';
+import { smHandles } from '../models/constants';
+import Button from '../components/button';
 
 class Home extends PureComponent{
   render(){
@@ -31,36 +35,18 @@ class Home extends PureComponent{
           <div className="level">
             <div className="level-left">
               <div className="level-item">
-                <div className="button is-light is-outlined">
-                  <span>See more</span>
-                </div>
+                <Button label="See More" />
               </div>
             </div>
             <div className="level-item">
-              <span className="icon btn">
-                <i className="fab fa-linkedin-in" />
-              </span>
-              <span className="icon btn">
-                <i className="fab fa-github" />
-              </span>
-              <span className="icon btn">
-                <i className="fab fa-facebook-f" />
-              </span>
-              <span className="icon btn">
-                <i className="fab fa-twitter" />
-              </span>
-              <span className="icon btn">
-                <i className="fab fa-youtube" />
-              </span>
-              <span className="icon btn">
-                <i className="fab fa-instagram" />
-              </span>
+              <SMButtons data={smHandles} />
             </div>
             <div className="level-right">
               <div className="level-item">
-                <div className="button is-light is-outlined">
-                  <span>Hire me</span>
-                </div>
+                <Button
+                  label="Contact Me"
+                  onClick={() => window.open('mailto:zilu2deep@gmail.com')}
+                />
               </div>
             </div>
           </div>
@@ -71,11 +57,3 @@ class Home extends PureComponent{
 }
 
 ReactDOM.render(<Home />, document.getElementById('root'));
-
-
-  // return ({ icon: '', placeholder: 'https://twitter.com/' });
-  // return ({ icon: '', placeholder: 'https://linkedin.com/' });
-  // return ({ icon: '', placeholder: 'https://instagram.com/' });
-  // return ({ icon: 'fab fa-pinterest-p', placeholder: 'https://pinterest.com/' });
-  // return ({ icon: 'fab fa-google-plus-g', placeholder: 'https://plus.google.com/' });
-  // return ({ icon: '', placeholder: 'https://youtube.com/' });
