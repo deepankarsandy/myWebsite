@@ -6,6 +6,7 @@ import Logo from '../components/logo';
 import SMButtons from '../components/sm_buttons';
 import { smHandles } from '../models/constants';
 import Button from '../components/button';
+import HomeFigure from '../components/home_figure';
 
 class Home extends PureComponent{
   render(){
@@ -23,14 +24,26 @@ class Home extends PureComponent{
             </div>
             <div className="level-right" />
           </div>
+          <div className="level">
+            <div className="level-left" />
+            <div className="level-right level-item">
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end' }}>
+                <h1 className="title">FRONT-END & MOBILE APP ENGINEER</h1>
+                <hr style={{ width: '2rem' }} />
+                <h2 className="subtitle">Build a lasting impression for customers</h2>
+              </div>
+            </div>
+          </div>
         </div>
-        <main className="hero-body">
-          <div>
-            <h1 className="title">FRONT-END & MOBILE APP ENGINEER</h1>
-            <hr style={{ width: '2rem' }} />
-            <h2 className="subtitle">Build a lasting impression for customers</h2>
+
+        <main className="hero-body is-paddingless">
+          <div className="container">
+            <div className="hero">
+              <HomeFigure />
+            </div>
           </div>
         </main>
+
         <div className="hero-foot">
           <div className="level">
             <div className="level-left">
