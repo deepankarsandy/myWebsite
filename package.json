@@ -46,6 +46,6 @@
     "start": "node ./app/config/www"
   },
   "engines": {
-    "node": ">=13.7"
+    "node": ">=10.17"
   }
 }

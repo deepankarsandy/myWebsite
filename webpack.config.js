@@ -20,7 +20,7 @@ module.exports = {
     // extensions that require will resolve.
     extensions: ['.js', '.jsx', '.js.jsx'],
     // directories to search in for files to resolve.
-    modules:    ['node_modules'],
+    modules:    ['node_modules', 'app/assets'],
     alias:      {
       modernizr$: path.resolve(__dirname, '.modernizrrc')
     }
@@ -34,11 +34,11 @@ module.exports = {
     // enquire:   'enquire',
   },
 
-  // plugins: [
-  //   new webpack.ProvidePlugin({
-  //     Router:    '../utils/router',
-  //   })
-  // ],
+  plugins: [
+    new webpack.DefinePlugin({
+      __DEV__: JSON.stringify(true),
+    })
+  ],
 
   module: {
     rules: [
