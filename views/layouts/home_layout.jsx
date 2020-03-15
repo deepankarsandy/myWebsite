@@ -23,7 +23,7 @@ class HomeLayout extends PureComponent{
           <title>Home</title>
         </head>
 
-        <body>
+        <body className="has-navbar-fixed-top">
           <div id="root" />
           {/* <div>{JSON.stringify(body)}</div> */}
           <noscript>
