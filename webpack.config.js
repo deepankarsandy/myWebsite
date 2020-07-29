@@ -7,7 +7,7 @@ module.exports = {
   context: __dirname,
   entry:   {
     home:        ['@babel/polyfill', './ui/js/pages/home.jsx'],
-    about:       ['@babel/polyfill', './ui/js/pages/about.jsx'],
+    // about:       ['@babel/polyfill', './ui/js/pages/about.jsx'],
   },
 
   output:  {
