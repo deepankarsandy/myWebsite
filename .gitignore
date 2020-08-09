@@ -1,3 +1,5 @@
 # dirs
 node_modules/
-app/assets/
+.sass-cache/
+dist/*
+!dist/*.html

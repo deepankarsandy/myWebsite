@@ -1,0 +1,14 @@
+
+.text-is-truncated{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.is-flex.is-centered{
+  justify-content: center;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

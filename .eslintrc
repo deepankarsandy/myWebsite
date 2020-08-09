@@ -1,6 +1,7 @@
 {
   "parser":  "babel-eslint",
   "extends": "airbnb",
+  "root": true,
 
   "parserOptions": {
     "ecmaFeatures": {
@@ -11,20 +12,28 @@
   },
 
   "rules": {
-    "new-cap":               [2, { "capIsNewExceptions": ["URI", "RegisterEffect"] }],
-    "no-multi-spaces":       [2, { "exceptions": { "Property": true, "VariableDeclarator": true, "BinaryExpression": true, "ImportDeclaration": true }}],
-    "key-spacing":           [2, { "beforeColon": false, "afterColon": true, "mode": "minimum", "align": "value" }],
-    "comma-dangle":          [2, "only-multiline"],
-    "space-before-blocks":   [2, "never"],
-    "no-unused-expressions": [2, { "allowShortCircuit": true, "allowTernary": true }],
-    "no-underscore-dangle":  [2, { "allowAfterThis": true, "allow": ["_appStaticModels"] }],
+    "new-cap":                [2, { "capIsNewExceptions": ["URI"] }],
+    "no-multi-spaces":        [2, { "exceptions": { "Property": true, "VariableDeclarator": true, "BinaryExpression": true, "ImportDeclaration": true }}],
+    "key-spacing":            [2, { "beforeColon": false, "afterColon": true, "mode": "minimum", "align": "value" }],
+    "comma-dangle":           [2, "only-multiline"],
+    "space-before-blocks":    [2, { "functions": "never", "keywords": "never", "classes": "always" }],
+    "no-unused-expressions":  [2, { "allowShortCircuit": true, "allowTernary": true }],
+    "no-underscore-dangle":   [2, { "allowAfterThis": true, "allow": ["_appStaticModels"] }],
     "function-paren-newline": ["error", "consistent"],
-    "react/forbid-prop-types": [2, { "forbid": ["any"], "checkContextTypes": false, "checkChildContextTypes": false }],
+    "no-restricted-globals":  ["error", "event", "fdescribe"],
 
     "wrap-iife":                   0,
     "func-names":                  0,
     "space-before-function-paren": 0,
-    "strict":                      0
+    "no-param-reassign":           [2, { "props": true, "ignorePropertyModificationsFor": ["draft", "acc"] }],
+    "react/prop-types": [2, {
+        "ignore": ["children", "className", "location", "history", "match", "props"],
+        "customValidators": [],
+        "skipUndeclared": false
+      }],
+    "react/jsx-props-no-spreading": [true, {
+      "exceptions": ["otherProps", "props", "button"]
+    }]
   },
 
   "env": {
@@ -39,9 +48,15 @@
   ],
 
   "settings": {
-    "import/parser":     "babel-eslint",
-    "import/resolve":    {
-      "moduleDirectory": ["node_modules", "js"]
+    "import/parser": "babel-eslint",
+    "import/extensions": [ ".js", ".jsx" ],
+    "import/resolver": {
+      "alias": {
+        "map": [
+          [ "~", "./js" ]
+        ],
+        "extensions": [ ".ts", ".js", ".jsx", ".json", ".svg" ]
+      }
     }
   }
 }
