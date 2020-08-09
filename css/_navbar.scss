@@ -61,6 +61,10 @@ $navbar-height: 3.25rem;
       }
 
       a { color: #4a4a4a; }
+      a.disabled {
+        color: #888888;
+        pointer-events: none;
+      }
     }
 
     &.has-dropdown:hover .navbar-dropdown {

@@ -1,0 +1,36 @@
+.button.float-button {
+  position: absolute;
+  border: none;
+  z-index: 999;
+  background: white;
+
+  &.is-fixed {
+    position: fixed;
+  }
+  
+  &.is-circle {
+    height: 3rem;
+    width: 3rem;
+    border-radius: 3rem;
+  }
+
+  &.home-scroller {
+    background: #b8f939;
+    box-shadow: 0 0 6px 0px rgba(32, 33, 36, 0.28);
+    > span { animation: heartbeat 1.5s linear 1s infinite both; }
+  }
+  
+
+  &.bottom {
+    top: auto;
+    bottom: 0;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
+  }
+
+  &.right {
+    right: 0;
+    left: auto;
+  }
+}

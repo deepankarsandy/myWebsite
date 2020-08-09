@@ -12,3 +12,8 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+a.disabled {
+  color: #888888;
+  pointer-events: none;
+}

@@ -13,6 +13,7 @@ import Navbar from './components/navbar';
 import Loading from './components/loading';
 
 const Home = loadable(() => import('./pages/home'), { fallback });
+const About = loadable(() => import('./pages/about'), { fallback });
 const NoContent = loadable(() => import('./components/no_content'), { fallback });
 
 const fallback = <Loading className="page-loading" />;
@@ -40,7 +41,12 @@ export default class Index extends Component {
               exact
               render={(props) => <Home {...props} />}
             />
-            <Route path="/*" component={NoRouteMatch} />
+            <Route
+              path="/about"
+              exact
+              render={(props) => <About {...props} />}
+            />
+            <Route path="/:other" component={NoRouteMatch} />
           </Switch>
         </Router>
       </section>

@@ -16,19 +16,18 @@ import Button from './button';
 export default class Navbar extends PureComponent {
   constructor(props){
     super(props);
-    this.state = { isMenuActive: false };
-    this.toggleMenu = this.toggleMenu.bind(this);
+
+    this.scrollToTop = this.scrollToTop.bind(this);
   }
 
-  toggleMenu(){
-    this.setState((prevState) => ({ isMenuActive: !prevState.isMenuActive }));
+  scrollToTop(){
+    window.scrollTo(0, 0);
   }
 
   render(){
     const {
       quickLinks, quickNavLabel, nodeRef, buttons
     } = this.props;
-    const { isMenuActive } = this.state;
 
     const quickNavLabelCx = classNames('navbar-link navbar-topic has-text-white quick-nav-label', {
       'is-arrowless': !isPresent(quickLinks),
@@ -38,15 +37,15 @@ export default class Navbar extends PureComponent {
       <nav id="navbar" ref={nodeRef} role="navigation" className="brand-navbar navbar is-fixed-top is-black" aria-label="main-navigation">
         <div className="navbar-brand">
           {/* Brand Icon */}
-          <a href="/" className="navbar-item brand-logo">
+          <NavLink to="/" onClick={this.scrollToTop} className="navbar-item brand-logo">
             <img alt="brand logo" src="/assets/image/logo.jpg" />
-          </a>
+          </NavLink>
 
           {/* Quick Links */}
           <span className="navbar-item has-dropdown is-hoverable">
-            <a href="/" className={quickNavLabelCx}>
+            <NavLink to="/" onClick={this.scrollToTop} className={quickNavLabelCx}>
               <span className="text-is-truncated">{quickNavLabel}</span>
-            </a>
+            </NavLink>
             
           {isPresent(quickLinks) && (
             <div className="navbar-dropdown">
@@ -67,7 +66,8 @@ export default class Navbar extends PureComponent {
               More
             </span>
             <div className='navbar-dropdown is-right'>
-              <NavLink className="navbar-item" to="/about">About</NavLink>
+              <NavLink className="navbar-item" to="/" exact activeClassName="disabled">Home</NavLink>
+              <NavLink className="navbar-item" to="/about" activeClassName="disabled">About</NavLink>
             </div>
           </span>
         </div>

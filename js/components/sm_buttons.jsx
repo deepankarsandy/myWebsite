@@ -50,9 +50,9 @@ class SMButtons extends PureComponent {
     const { data } = this.props;
 
     return (
-      <ButtonGroup>
+      <ButtonGroup className="is-centered">
         {data.map((smHandle) => (
-          isPresent(smHandle.url) ? (
+          isPresent(smHandle.url) && !smHandle.disabled ? (
             <Button
               key={smHandle.type}
               value={smHandle.type}
