@@ -31,7 +31,7 @@
         "customValidators": [],
         "skipUndeclared": false
       }],
-    "react/jsx-props-no-spreading": [true, {
+    "react/jsx-props-no-spreading": [2, {
       "exceptions": ["otherProps", "props", "button"]
     }]
   },

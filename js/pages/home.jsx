@@ -2,19 +2,28 @@ import React, { PureComponent } from 'react';
 
 import Button from '../components/button';
 import SMButtons from '../components/sm_buttons';
-import { smHandles, user } from '../models/constants';
+import { Me } from '../models/constants';
 import FloatButton from '../components/floating_button';
+
+function scrollToTop(){
+  window.scrollTo(0, 0);
+}
+
+function floatButtonClick(){
+  const pageHeight = window.innerHeight - 52; // 52 = 3.25rem = navbar height
+  const scrollTo = (window.pageYOffset + pageHeight)
+    - ((window.pageYOffset + pageHeight) % pageHeight);
+  window.scrollTo(0, scrollTo);
+}
 
 export default class Home extends PureComponent {
   constructor(props){
     super(props);
     this.state = {
-      atTop: true,
+      atTop:    true,
       atBottom: false,
-    }
+    };
 
-    this.floatButtonClick = this.floatButtonClick.bind(this);
-    this.scrollToTop = this.scrollToTop.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
   }
 
@@ -23,17 +32,17 @@ export default class Home extends PureComponent {
   }
 
   componentWillUnmount(){
-      window.removeEventListener('scroll', this.handleScroll);
-      clearTimeout(this.timerId);
+    window.removeEventListener('scroll', this.handleScroll);
+    clearTimeout(this.timerId);
   }
 
   handleScroll(e){
     clearTimeout(this.timerId);
 
     this.timerId = setTimeout(() => {
-      let atTop, atBottom;
+      let atTop; let atBottom;
 
-      if (window.pageYOffset > 0) {
+      if (window.pageYOffset > 0){
         atTop = false;
       } else {
         atTop = true;
@@ -41,23 +50,13 @@ export default class Home extends PureComponent {
 
       // 10 is to normalize
       if (window.pageYOffset + 10 > e.target.scrollingElement.scrollHeight - window.innerHeight){
-        atBottom =  true;
+        atBottom = true;
       } else {
         atBottom = false;
       }
 
       this.setState({ atTop, atBottom });
     }, 500);
-  }
-
-  scrollToTop(){
-    window.scrollTo(0, 0);
-  }
-
-  floatButtonClick(){
-    const pageHeight = window.innerHeight - 52; // 52 = 3.25rem = navbar height
-    const scrollTo = (window.pageYOffset + pageHeight) - ((window.pageYOffset + pageHeight) % pageHeight);
-    window.scrollTo(0, scrollTo);
   }
 
   render(){
@@ -67,13 +66,13 @@ export default class Home extends PureComponent {
       <main className="page page--home">
         {!atBottom && (
         <FloatButton
-          onClick={this.floatButtonClick}
+          onClick={floatButtonClick}
           className="home-scroller is-circle is-fixed"
         />
         )}
         {!atTop && (
-        <FloatButton 
-          onClick={this.scrollToTop}
+        <FloatButton
+          onClick={scrollToTop}
           position="bottom right"
           icon="fas fa-chevron-up fa-lg"
           className="home-scroller is-circle is-fixed"
@@ -83,7 +82,7 @@ export default class Home extends PureComponent {
         <section className="hero is-dark is-bold is-fullheight-with-navbar root">
           <main className="hero-body">
             <div className="container has-text-centered">
-              <h1 className="title is-uppercase">{user.jobTitle}</h1>
+              <h1 className="title is-uppercase">{Me.jobTitle}</h1>
               <hr />
               <h2 className="subtitle is-capitalized">Build a lasting impression for customers</h2>
             </div>
@@ -94,7 +93,7 @@ export default class Home extends PureComponent {
           <header className="hero-head">
             <h1 className="title">ABOUT</h1>
             <hr style={{ width: '2rem' }} />
-            <h2 className="subtitle">{user.about}</h2>
+            <h2 className="subtitle">{Me.about}</h2>
           </header>
         </section>
         {/* Skills */}
@@ -103,7 +102,7 @@ export default class Home extends PureComponent {
             <div className="is-pulled-right">
               <h1 className="title">SKILLS</h1>
               <hr style={{ width: '2rem' }} />
-              <h2 className="subtitle has-text-right">{user.skills}</h2>
+              <h2 className="subtitle has-text-right">{Me.skills}</h2>
             </div>
           </header>
         </section>
@@ -112,7 +111,7 @@ export default class Home extends PureComponent {
           <div className="hero-head">
             <h1 className="title">PROJECTS</h1>
             <hr style={{ width: '2rem' }} />
-            {user.projects.map((skill) => (
+            {Me.projects.map((skill) => (
               <div key={skill.id} className="title">
                 <h2 className="title is-4 is-marginless">{skill.title}</h2>
                 <span className="subtitle is-6">{skill.description}</span>
@@ -131,13 +130,13 @@ export default class Home extends PureComponent {
               />
             </div>
             <div className="level-item">
-              <SMButtons data={smHandles} />
+              <SMButtons data={Me.smHandles} />
             </div>
             <div className="level-item">
               <Button
                 className="is-info"
                 label="Contact Me"
-                onClick={() => window.open('mailto:zilu2deep@gmail.com')}
+                onClick={() => window.open(`mailto:${Me.email}`)}
               />
             </div>
           </div>
