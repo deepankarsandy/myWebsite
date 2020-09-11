@@ -1,6 +1,9 @@
 .page.page--covid19 {
 	.vaccine-finder {
 		display: flex;
+		flex-wrap: wrap;
+
+		.pincode.field { width: 19rem; }
 
 		>* {
 			padding: 1em;

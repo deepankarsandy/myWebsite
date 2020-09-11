@@ -12,7 +12,7 @@ function getVaccines(){
   })
     .then((res) => res.json()
       .then((data) => {
-        if (!data.centers.length){
+        if (!data?.centers?.length){
           return [];
         }
 
@@ -39,7 +39,7 @@ const BG_PROCESS = {
     setInterval(() => {
       getVaccines()
         .then((v) => {
-          if (v.length){
+          if (v?.length){
             Slack.send({ channel: 'UGN1EP802', text: '@deepankar: Vaccine Available', link_names: 'deepankar' });
           }
         })

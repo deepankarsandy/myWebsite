@@ -1,6 +1,6 @@
 {
   "name": "bio-website",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Bio Website",
   "author": "Deepankar Sandhibigraha",
   "license": "UNLICENSED",
@@ -72,7 +72,7 @@
     "build": "NODE_ENV=production webpack --config webpack.production.config.js"
   },
   "engines": {
-    "node": ">=11.3",
+    "node": "14.x",
     "npm": ">=6.14.6",
     "yarn": ">=1.19.x"
   }

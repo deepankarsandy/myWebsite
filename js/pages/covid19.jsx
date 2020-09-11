@@ -68,9 +68,10 @@ export default class Covid19 extends PureComponent {
             <th>Date</th>
             <th>Place</th>
             <th>Total Dose</th>
-            <th>Dose 1</th>
-            <th>Dose 2</th>
-            <th>Address</th>
+            <th className="is-hidden-mobile">Dose 1</th>
+            <th className="is-hidden-mobile">Dose 2</th>
+            <th className="is-hidden-mobile">Address</th>
+            <th>Register</th>
           </tr>
         </thead>
         <tbody>
@@ -79,14 +80,19 @@ export default class Covid19 extends PureComponent {
               <td>{/* DateTime.dayjs(v.date, 'DD-MM-YYYY').format('ddd, MMM DD') */ v.date}</td>
               <td>{v.center.name}</td>
               <td className="align-right">{v.available_capacity}</td>
-              <td className="align-right">{v.available_capacity_dose1}</td>
-              <td className="align-right">{v.available_capacity_dose2}</td>
-              <td>
+              <td className="is-hidden-mobile align-right">{v.available_capacity_dose1}</td>
+              <td className="is-hidden-mobile align-right">{v.available_capacity_dose2}</td>
+              <td className="is-hidden-mobile">
                 {v.center.address}
                 ,&nbsp;
                 {v.center.block_name}
                 ,&nbsp;
                 {v.center.pincode}
+              </td>
+              <td>
+                <a className="button is-link" href="https://selfregistration.cowin.gov.in/" target="cowin_register" title="register">
+                  Register
+                </a>
               </td>
             </tr>
           ))}
@@ -103,7 +109,7 @@ export default class Covid19 extends PureComponent {
         <section className="hero is-dark is-bold is-fullheight-with-navbar root">
           <header className="hero-head">
             <div className="vaccine-finder">
-              <div className="field">
+              <div className="pincode field">
                 <div className="control">
                   <input placeholder="Pincode" className="input" type="number" value={pin} min={111111} max={999999} onChange={this.onSetPin} />
                 </div>
