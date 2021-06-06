@@ -5,7 +5,12 @@
 @import './navbar';
 @import './button';
 @import './animation';
+@import './table';
 
 html{
   scroll-behavior: smooth;
 };
+
+.hidden, .hide {
+  display: none;
+}

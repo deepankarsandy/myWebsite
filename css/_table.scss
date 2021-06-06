@@ -1,0 +1,28 @@
+.table {
+  td.align-right, th.align-right { text-align: right; }
+  td.align-left, th.align-left { text-align: left; }
+  td.align-center, th.align-center { text-align: center; }
+}
+
+.dark, .dark-theme {
+  .table {
+    color: white;
+    background: #363636;
+  }
+
+  .table thead td, .table thead th {
+    color: white;
+  }
+
+  .table.is-striped tbody tr:not(.is-selected):nth-child(even){
+    background: #404040;
+  }
+
+  .table.is-hoverable.is-striped tbody tr:not(.is-selected):hover{
+    background-color: #fafafa85;
+  }
+  
+  .table.is-hoverable.is-striped tbody tr:not(.is-selected):hover:nth-child(even){
+    background-color: #fafafa85;
+  }
+}

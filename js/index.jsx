@@ -4,7 +4,7 @@ modification history
 01a,09aug2020,deepankar created
 */
 
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import loadable from '@loadable/component';
@@ -13,6 +13,7 @@ import Navbar from './components/navbar';
 import Loading from './components/loading';
 
 const Home = loadable(() => import('./pages/home'), { fallback });
+const Covid19 = loadable(() => import('./pages/covid19'), { fallback });
 const About = loadable(() => import('./pages/about'), { fallback });
 const NoContent = loadable(() => import('./components/no_content'), { fallback });
 
@@ -26,7 +27,7 @@ function NoRouteMatch(){
 }
 
 
-export default class Index extends Component {
+export default class Index extends PureComponent {
   render(){
     return (
       <section className="app-root">
@@ -45,6 +46,11 @@ export default class Index extends Component {
               path="/about"
               exact
               render={(props) => <About {...props} />}
+            />
+            <Route
+              path="/covid19"
+              exact
+              render={(props) => <Covid19 {...props} />}
             />
             <Route path="/:other" component={NoRouteMatch} />
           </Switch>

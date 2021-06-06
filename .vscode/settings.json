@@ -1,6 +1,9 @@
 {
   "eslint.enable": true,
   "cSpell.words": [
+    "COVID",
+    "fastify",
+    "pincode",
     "pinterest"
   ]
 }

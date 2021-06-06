@@ -46,17 +46,19 @@ export default class Navbar extends PureComponent {
             <NavLink to="/" onClick={this.scrollToTop} className={quickNavLabelCx}>
               <span className="text-is-truncated">{quickNavLabel}</span>
             </NavLink>
-            
-          {isPresent(quickLinks) && (
-            <div className="navbar-dropdown">
-              {map((item) => (
-                <span className="navbar-item" key={item.label}>
-                  <a href={item.link}><div>{item.label}</div></a>
-                </span>
-              ), quickLinks)}
-            </div>
-          )}
+            {isPresent(quickLinks) && (
+              <div className="navbar-dropdown">
+                {map((item) => (
+                  <span className="navbar-item" key={item.label}>
+                    <a href={item.link}><div>{item.label}</div></a>
+                  </span>
+                ), quickLinks)}
+              </div>
+            )}
           </span>
+          <NavLink to="/covid19" className="navbar-link navbar-topic has-text-red quick-nav-label is-arrowless has-text-weight-bold has-text-warning">
+            <span>COVID 19</span>
+          </NavLink>
         </div>
 
         <div className="navbar-end">

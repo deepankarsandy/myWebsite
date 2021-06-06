@@ -1,0 +1,14 @@
+.page.page--covid19 {
+	.vaccine-finder {
+		display: flex;
+
+		>* {
+			padding: 1em;
+		}
+	}
+
+	.hero-body {
+		justify-content: center;
+		align-items: flex-start;
+	}
+}
