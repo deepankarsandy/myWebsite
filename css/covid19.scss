@@ -11,7 +11,10 @@
 	}
 
 	.hero-body {
-		justify-content: center;
-		align-items: flex-start;
+		display: block;
+	}
+
+	.table {
+		word-break: break-all;
 	}
 }

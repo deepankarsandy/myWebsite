@@ -2,6 +2,7 @@
   td.align-right, th.align-right { text-align: right; }
   td.align-left, th.align-left { text-align: left; }
   td.align-center, th.align-center { text-align: center; }
+  th.no-wrap, td.no-wrap { white-space: nowrap; }
 }
 
 .dark, .dark-theme {
