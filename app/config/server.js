@@ -3,7 +3,7 @@ const fastify = require('fastify')({ logger: true });
 const path = require('path');
 require('dotenv').config();
 const fastifyStatic = require('fastify-static');
-const BG_PROCESS = require('./bg_process');
+const BG_TASKS = require('./bg_tasks');
 
 const ROOT = path.join(__dirname, '../../');
 
@@ -12,7 +12,7 @@ const start = async () => {
   try {
     await fastify.listen(PORT, '0.0.0.0');
     fastify.log.info(`server listening on port ${PORT}`);
-    BG_PROCESS.lightening();
+    BG_TASKS.init();
   } catch (err){
     fastify.log.error(err);
     process.exit(1);

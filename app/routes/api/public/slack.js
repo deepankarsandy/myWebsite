@@ -7,7 +7,7 @@ modification history
 const { WebClient, LogLevel } = require('@slack/web-api');
 
 const client = new WebClient(process.env.SLACK_BOT_API, {
-  logLevel: LogLevel.DEBUG
+  logLevel: LogLevel.ERROR
 });
 
 const Slack = {
