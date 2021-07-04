@@ -1,0 +1,12 @@
+.page.page--chat-rooms {
+  .chat-box {
+    max-width: 30rem;
+    width: 90%;
+
+    .chats {
+      height: 20rem;
+      max-height: 100%;
+      overflow: auto;
+    }
+  }
+}

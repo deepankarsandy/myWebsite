@@ -1,6 +1,5 @@
 import React, { PureComponent } from 'react';
 import Button from '../components/button';
-import Slack from '../helpers/slack_api';
 
 export default class About extends PureComponent {
   render(){
@@ -12,7 +11,6 @@ export default class About extends PureComponent {
               <h1 className="title is-uppercase">Coming Soon...</h1>
               <h2>It'll contain specific details about the project and deployment</h2>
             </div>
-            <Button label="Test Slack API" className="hidden hide" onClick={() => Slack.post('Slack API Test')} />
           </main>
         </section>
       </main>

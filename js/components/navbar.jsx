@@ -56,8 +56,11 @@ export default class Navbar extends PureComponent {
               </div>
             )}
           </span>
-          <NavLink to="/covid19" className="navbar-link navbar-topic has-text-red quick-nav-label is-arrowless has-text-weight-bold has-text-warning">
+          <NavLink to="/covid19" className="navbar-link navbar-topic quick-nav-label is-arrowless has-text-weight-bold has-text-warning">
             <span>COVID 19</span>
+          </NavLink>
+          <NavLink to="/chatRooms" className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold">
+            <span>Chat Rooms</span>
           </NavLink>
         </div>
 
