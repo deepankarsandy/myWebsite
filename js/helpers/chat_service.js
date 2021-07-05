@@ -6,7 +6,7 @@ modification history
 
 import EventEmitter from '../lib/event_emitter';
 
-const ws = new WebSocket(`ws://${location.host}`);
+const ws = new WebSocket(`${location.protocol.includes('https') ? 'wss' : 'ws'}://${location.host}`);
 let uuid = null;
 const channels = {};
 
