@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import Button from '../components/button';
 import SMButtons from '../components/sm_buttons';
-import { Me } from '../models/constants';
+import { Me } from '../data/constants';
 import FloatButton from '../components/floating_button';
 
 function scrollToTop(){

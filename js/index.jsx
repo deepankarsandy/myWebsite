@@ -9,16 +9,17 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import loadable from '@loadable/component';
 
-import Navbar from './components/navbar';
 import Loading from './components/loading';
 
+const fallback = <Loading className="page-loading" />;
+
+const Navbar = loadable(() => import('./components/navbar'), { fallback });
 const Home = loadable(() => import('./pages/home'), { fallback });
 const Covid19 = loadable(() => import('./pages/covid19'), { fallback });
 const About = loadable(() => import('./pages/about'), { fallback });
 const ChatRooms = loadable(() => import('./pages/chat_rooms'), { fallback });
 const NoContent = loadable(() => import('./components/no_content'), { fallback });
 
-const fallback = <Loading className="page-loading" />;
 function NoRouteMatch(){
   return (
     <NoContent className="page page--404" message="Oops...We can&apos;t seem to find the page you are looking for.">
@@ -27,16 +28,12 @@ function NoRouteMatch(){
   );
 }
 
-
 export default class Index extends PureComponent {
   render(){
     return (
       <section className="app-root">
         <Router>
-          <Route
-            path="/"
-            render={(props) => <Navbar quickNavLabel="Deepankar" {...props} />}
-          />
+          <Navbar />
           <Switch>
             <Route
               path="/"
@@ -54,7 +51,7 @@ export default class Index extends PureComponent {
               render={(props) => <Covid19 {...props} />}
             />
             <Route
-              path="/chatRooms"
+              path="/chat-rooms"
               exact
               render={(props) => <ChatRooms {...props} />}
             />

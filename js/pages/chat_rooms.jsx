@@ -23,12 +23,13 @@ export default class ChatRooms extends PureComponent {
       channel:   {},
     };
 
+    this.onKeyPress = this.onKeyPress.bind(this);
     this.send = this.send.bind(this);
     this.joinChannel = this.joinChannel.bind(this);
     this.onNewMessage = this.onNewMessage.bind(this);
 
-    EventEmitter.on('MESSAGE', this.onNewMessage);
-    EventEmitter.on('CHANNEL', (channel) => {
+    EventEmitter.on('NEW_MESSAGE', this.onNewMessage);
+    EventEmitter.on('CHANNEL_CREATED', (channel) => {
       this.setState({ channel });
     });
   }
@@ -39,6 +40,15 @@ export default class ChatRooms extends PureComponent {
 
   onNewMessage(){
     this.forceUpdate();
+  }
+
+  onKeyPress(e){
+    const { key, shiftKey } = e;
+
+    if ((key === 'Enter' && !shiftKey) || (key === 'Enter' && shiftKey)){
+      e.preventDefault();
+      this.send();
+    }
   }
 
   send(){
@@ -94,11 +104,11 @@ export default class ChatRooms extends PureComponent {
             ) : (
               <section className="chat-box section">
                 <div className="chats">
-                  {ChatService.messages(channelId).map((message, i) => (
+                  {ChatService.messages(channel.id).map((message, i) => (
                     <div key={i} className="content">
                       <div className="subtitle is-6 mb-1">{message.text}</div>
                       <div className="subtitle is-7 has-text-grey mr-4">
-                        <span className="mr-4">{ChatService.getUser(channelId, message.userId)?.name}</span>
+                        <span className="mr-4">{message.userName}</span>
                         <span>{dayjs(message.createdAt).format('hh:mmA')}</span>
                       </div>
                     </div>
@@ -111,6 +121,7 @@ export default class ChatRooms extends PureComponent {
                     onChange={({ target: { value } }) => this.setState({ msg: value })}
                     value={msg}
                     placeholder="Type your message"
+                    onKeyPress={this.onKeyPress}
                   />
                   <Button
                     label="Send"

@@ -85,6 +85,10 @@ $navbar-height: 3.25rem;
 
     img {
       max-height: 3.2rem;
+
+      @include tablet {
+        padding-right: 1rem; 
+      }
     }
   }
 

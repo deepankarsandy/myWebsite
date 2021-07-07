@@ -8,24 +8,42 @@ modification history
 02a,04jul2021,deepankar added websocket
 */
 
-const fastify = require('fastify')({ logger: true });
-const path = require('path');
-require('dotenv').config();
-const fastifyStatic = require('fastify-static');
+import path, { dirname } from 'path';
+// import fs from 'fs';
+import fastifyStatic from 'fastify-static';
+import dotenv from 'dotenv';
+import fastifyBuilder from 'fastify';
+import { fileURLToPath } from 'url';
 
-const WS = require('./websocket');
-const BG_TASKS = require('./bg_tasks');
-const MessageService = require('./message_service');
+import Websocket from '../lib/websocket/server.js';
+import BG_TASKS from '../helpers/bg_tasks.js';
+import MessageService from '../helpers/message_service.js';
+import apiRoutes from '../routes/api.routes.js';
+import staticRoutes from '../routes/static.routes.js';
 
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(fileURLToPath(import.meta.url));
+dotenv.config();
 const ROOT = path.join(__dirname, '../../');
 
-MessageService.init(WS.init(fastify.server));
+const fastify = fastifyBuilder({
+  logger: true,
+  // http2:  true,
+  // https:  {
+  //   allowHTTP1: true, // fallback support for HTTP1
+  //   key:        fs.readFileSync(path.join(ROOT, 'app', 'ssl', 'localhost.key')),
+  //   cert:       fs.readFileSync(path.join(ROOT, 'app', 'ssl', 'localhost.crt'))
+  // }
+});
 
 const start = async () => {
   const PORT = process.env.PORT || 3000;
   try {
     await fastify.listen(PORT, '0.0.0.0');
     fastify.log.info(`server listening on port ${PORT}`);
+    const ws = new Websocket({ server: fastify.server });
+    MessageService.init(ws);
+
     BG_TASKS.lightening();
   } catch (err){
     fastify.log.error(err);
@@ -44,7 +62,7 @@ fastify.register(fastifyStatic, {
   prefix:        '/assets',
 });
 
-fastify.register(require('./api_routes'));
-fastify.register(require('./routes'));
+fastify.register(apiRoutes, { prefix: '/api' });
+fastify.register(staticRoutes);
 
 start();

@@ -4,4 +4,4 @@ const BG_PROCESS = {
   }
 };
 
-module.exports = BG_PROCESS;
+export default BG_PROCESS;

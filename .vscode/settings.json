@@ -1,9 +1,23 @@
 {
-  "eslint.enable": true,
-  "cSpell.words": [
-    "COVID",
-    "fastify",
-    "pincode",
-    "pinterest"
-  ]
+  "terminal.integrated.shell.windows": "C:\\Windows\\System32\\wsl.exe",
+  "terminal.integrated.shell.linux": "/bin/zsh",
+  "editor.wordWrap": "off",
+  "files.trimTrailingWhitespace": true,
+  "editor.fontSize": 14,
+  "files.autoSave": "onFocusChange",
+  "editor.tabSize": 2,
+  "extensions.ignoreRecommendations": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "gitlens.views.repositories.files.layout": "tree",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "cSpell.userWords": [
+      "Deepankar",
+      "Sandhibigraha",
+  ],
+  "prettier.eslintIntegration": true,
+  "prettier.jsxSingleQuote": true,
+  "prettier.singleQuote": true,
+  "tabnine.experimentalAutoImports": true,
+  "security.workspace.trust.untrustedFiles": "open"
 }
