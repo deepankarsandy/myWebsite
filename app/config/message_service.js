@@ -4,7 +4,7 @@ modification history
 01a,04jul2021,deepankar created
 */
 
-const { v4: uuid4 } = require('uuid');
+import { v4 as uuid4 } from 'uuid';
 
 const CHANNELS = new Map();
 const USERS = new Map();
@@ -160,4 +160,4 @@ const MessageService = {
   }
 };
 
-module.exports = MessageService;
+export default MessageService;

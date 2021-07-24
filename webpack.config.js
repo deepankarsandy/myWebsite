@@ -1,7 +1,11 @@
-const path = require('path');
-const webpack = require('webpack');
+import path, { dirname } from 'path';
+import webpack from 'webpack';
+import { fileURLToPath } from 'url';
 
-module.exports = {
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+export default {
   mode:    'development',
   devtool: 'eval-source-map',
   context: __dirname,
@@ -14,6 +18,7 @@ module.exports = {
   output:  {
     path:       path.join(__dirname, 'dist', 'js'),
     filename:   '[name].js',
+    publicPath:  path.join('dist', 'js/')
   },
 
   resolve: {
@@ -21,35 +26,31 @@ module.exports = {
     extensions: ['.js', '.jsx', '.js.jsx'],
     // directories to search in for files to resolve.
     modules:    ['node_modules'],
-    alias:      {
-      modernizr$: path.resolve(__dirname, '.modernizrrc')
-    }
+    alias:      {}
   },
 
-  externals: {
-    // $:         'jquery',
-    // jQuery:    'jquery',
-    // Modernizr: 'Modernizr',
-    // History:   'History',
-    // enquire:   'enquire',
-  },
+  externals: {},
 
   plugins: [
     new webpack.DefinePlugin({
       __DEV__: true,
+      __dirname
     })
   ],
 
   module: {
     rules: [
       {
-        test:    /\.jsx?$/,
-        use:     'babel-loader',
-        exclude: /(node_modules|bower_components)/
+        test:    /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        },
+        exclude: /(node_modules)/,
       },
       {
-        test:   /\.modernizrrc$/,
-        use:    'modernizr-loader'
+        test:    /\.jsx?$/,
+        use:     'babel-loader',
+        exclude: /(node_modules)/
       },
       {
         test: /\.css$/,
@@ -71,7 +72,14 @@ module.exports = {
               sourceMap: true
             }
           },
-          'postcss-loader',
+          {
+            loader:  'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: ['autoprefixer'],
+              }
+            },
+          },
           'sass-loader',
         ],
       },

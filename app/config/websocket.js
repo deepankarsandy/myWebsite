@@ -4,7 +4,7 @@ modification history
 01a,04jul2021,deepankar created
 */
 
-const WebSocket = require('ws');
+import WebSocket from 'ws';
 
 const WS = {
   init(server, path){
@@ -12,4 +12,4 @@ const WS = {
   },
 };
 
-module.exports = WS;
+export default WS;

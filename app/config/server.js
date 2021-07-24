@@ -8,17 +8,24 @@ modification history
 02a,04jul2021,deepankar added websocket
 */
 
-const fastify = require('fastify')({ logger: true });
-const path = require('path');
-require('dotenv').config();
-const fastifyStatic = require('fastify-static');
+import path, { dirname } from 'path';
+import fastifyStatic from 'fastify-static';
+import dotenv from 'dotenv';
+import fastifyBuilder from 'fastify';
+import { fileURLToPath } from 'url';
 
-const WS = require('./websocket');
-const BG_TASKS = require('./bg_tasks');
-const MessageService = require('./message_service');
+import WS from './websocket.js';
+import BG_TASKS from './bg_tasks.js';
+import MessageService from './message_service.js';
+import apiRoutes from './api_routes.js';
+import routes from './routes.js';
 
+dotenv.config();
+
+// eslint-disable-next-line no-underscore-dangle
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const fastify = fastifyBuilder({ logger: true });
 const ROOT = path.join(__dirname, '../../');
-
 MessageService.init(WS.init(fastify.server));
 
 const start = async () => {
@@ -44,7 +51,7 @@ fastify.register(fastifyStatic, {
   prefix:        '/assets',
 });
 
-fastify.register(require('./api_routes'));
-fastify.register(require('./routes'));
+fastify.register(apiRoutes);
+fastify.register(routes);
 
 start();
