@@ -33,10 +33,7 @@ export default class Index extends PureComponent {
     return (
       <section className="app-root">
         <Router>
-          <Route
-            path="/"
-            render={(props) => <Navbar quickNavLabel="Deepankar" {...props} />}
-          />
+          <Navbar />
           <Switch>
             <Route
               path="/"
