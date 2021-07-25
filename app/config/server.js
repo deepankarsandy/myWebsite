@@ -15,11 +15,10 @@ import dotenv from 'dotenv';
 import fastifyBuilder from 'fastify';
 import { fileURLToPath } from 'url';
 
-import WS from './websocket.js';
-import BG_TASKS from './bg_tasks.js';
-import MessageService from './message_service.js';
-import apiRoutes from './api_routes.js';
-import routes from './routes.js';
+import WS from '../lib/websocket.js';
+import BG_TASKS from '../helpers/bg_tasks.js';
+import MessageService from '../helpers/message_service.js';
+import apiRoutes from '../routes/api.routes.js';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -35,13 +34,14 @@ const fastify = fastifyBuilder({
   //   cert:       fs.readFileSync(path.join(ROOT, 'app', 'ssl', 'localhost.crt'))
   // }
 });
-MessageService.init(WS.init(fastify.server));
 
 const start = async () => {
   const PORT = process.env.PORT || 3000;
   try {
     await fastify.listen(PORT, '0.0.0.0');
     fastify.log.info(`server listening on port ${PORT}`);
+    MessageService.init(WS.init(fastify.server));
+
     BG_TASKS.lightening();
   } catch (err){
     fastify.log.error(err);
@@ -51,7 +51,13 @@ const start = async () => {
 
 fastify.register(fastifyStatic, {
   root:          path.join(ROOT, 'dist'),
+  prefix:        '/',
+});
+
+fastify.register(fastifyStatic, {
+  root:          path.join(ROOT, 'dist'),
   prefix:        '/dist',
+  decorateReply: false,
 });
 
 fastify.register(fastifyStatic, {
@@ -61,6 +67,5 @@ fastify.register(fastifyStatic, {
 });
 
 fastify.register(apiRoutes);
-fastify.register(routes);
 
 start();
