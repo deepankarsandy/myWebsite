@@ -9,6 +9,7 @@ modification history
 */
 
 import path, { dirname } from 'path';
+// import fs from 'fs';
 import fastifyStatic from 'fastify-static';
 import dotenv from 'dotenv';
 import fastifyBuilder from 'fastify';
@@ -20,12 +21,20 @@ import MessageService from './message_service.js';
 import apiRoutes from './api_routes.js';
 import routes from './routes.js';
 
-dotenv.config();
-
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const fastify = fastifyBuilder({ logger: true });
+dotenv.config();
 const ROOT = path.join(__dirname, '../../');
+
+const fastify = fastifyBuilder({
+  logger: true,
+  // http2:  true,
+  // https:  {
+  //   allowHTTP1: true, // fallback support for HTTP1
+  //   key:        fs.readFileSync(path.join(ROOT, 'app', 'ssl', 'localhost.key')),
+  //   cert:       fs.readFileSync(path.join(ROOT, 'app', 'ssl', 'localhost.crt'))
+  // }
+});
 MessageService.init(WS.init(fastify.server));
 
 const start = async () => {
