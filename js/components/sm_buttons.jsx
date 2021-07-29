@@ -5,7 +5,7 @@ import { mapObjIndexed, values, mergeDeepRight } from 'ramda';
 import isPresent from '../helpers/isPresent';
 import Button from './button';
 import ButtonGroup from './button_group';
-import { SM_HANDLES } from '../models/constants';
+import { SM_HANDLES } from '../data/constants';
 
 function openSM(e){
   const { value } = e.currentTarget;
