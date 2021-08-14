@@ -51,7 +51,7 @@ export default class Index extends PureComponent {
               render={(props) => <Covid19 {...props} />}
             />
             <Route
-              path="/chatRooms"
+              path="/chat-rooms"
               exact
               render={(props) => <ChatRooms {...props} />}
             />
