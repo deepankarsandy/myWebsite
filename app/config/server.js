@@ -19,7 +19,7 @@ import WS from '../lib/websocket.js';
 import BG_TASKS from '../helpers/bg_tasks.js';
 import MessageService from '../helpers/message_service.js';
 import apiRoutes from '../routes/api.routes.js';
-import staticRoutes from '../routes/static.routs.js';
+import staticRoutes from '../routes/static.routes.js';
 
 // eslint-disable-next-line no-underscore-dangle
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -61,7 +61,7 @@ fastify.register(fastifyStatic, {
   prefix:        '/assets',
 });
 
+fastify.register(apiRoutes, { prefix: '/api' });
 fastify.register(staticRoutes);
-fastify.register(apiRoutes);
 
 start();
