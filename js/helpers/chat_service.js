@@ -38,6 +38,9 @@ const MessageService = {
     ws.onerror = (err) => {
       console.log('error', err);
     };
+    ws.onclose = (err) => {
+      console.log('close', err);
+    };
   },
 
   joinChannel(channelId, user){

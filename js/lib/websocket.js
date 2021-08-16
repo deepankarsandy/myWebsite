@@ -1,10 +1,15 @@
 import { mergeRight } from 'ramda';
-import EventEmitter from './event_emitter';
+import EventEmitter from 'eventemitter3';
 
-export default class Websocket extends EventEmitter {
+const STATE_CODE = {
+  0: 'CONNECTING', // Socket has been created. The connection is not yet open.
+  1: 'OPEN', // The connection is open and ready to communicate.
+  2: 'CLOSING', // The connection is in the process of closing.
+  3: 'CLOSED', // The connection is closed or couldn't be opened.
+};
+
+export default class Websocket {
   constructor(opts){
-    super(opts);
-
     const defaultOptions = {
       url:         null,
       protocols:   undefined,
@@ -14,8 +19,6 @@ export default class Websocket extends EventEmitter {
     };
 
     const options = mergeRight(defaultOptions, opts);
-
-    this.init = this.init.bind(this);
 
     options.autoConnect && this.connect(options.url, options.protocols);
     this.realWs = null;
@@ -29,11 +32,39 @@ export default class Websocket extends EventEmitter {
     this.realWs.onmessage(...args);
   }
 
-  onerror(...args){
-    this.realWs.onerror(...args);
+  onopen(cb, ...args){
+    this.realWs.onopen((e) => {
+      cb && cb(e, ...args);
+    });
   }
 
-  onclose(...args){
-    this.realWs.onclose(...args);
+  onerror(cb, ...args){
+    this.realWs.onerror((err) => {
+      cb && cb(err, ...args);
+    });
+  }
+
+  onclose(cb, ...args){
+    this.realWs.onclose((e) => {
+      cb && cb(e, ...args);
+    });
+  }
+
+  // --------- GETTERS -------
+
+  get readyState(){
+    return this.realWs.readyState;
+  }
+
+  get state(){
+    return STATE_CODE[this.readyState];
+  }
+
+  get connected(){
+    return this.readyState === 1;
+  }
+
+  get originalWs(){
+    return this.realWs;
   }
 }
