@@ -15,7 +15,7 @@ import dotenv from 'dotenv';
 import fastifyBuilder from 'fastify';
 import { fileURLToPath } from 'url';
 
-import WS from '../lib/websocket.js';
+import Websocket from '../lib/websocket/server.js';
 import BG_TASKS from '../helpers/bg_tasks.js';
 import MessageService from '../helpers/message_service.js';
 import apiRoutes from '../routes/api.routes.js';
@@ -41,7 +41,8 @@ const start = async () => {
   try {
     await fastify.listen(PORT, '0.0.0.0');
     fastify.log.info(`server listening on port ${PORT}`);
-    MessageService.init(WS.init(fastify.server));
+    const ws = new Websocket({ server: fastify.server });
+    MessageService.init(ws);
 
     BG_TASKS.lightening();
   } catch (err){

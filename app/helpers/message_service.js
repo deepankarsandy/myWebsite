@@ -4,8 +4,6 @@ modification history
 01a,04jul2021,deepankar created
 */
 
-import { v4 as uuid4 } from 'uuid';
-
 const CHANNELS = new Map();
 const USERS = new Map();
 let SERVER = null;
@@ -15,15 +13,16 @@ const MessageService = {
     SERVER = server;
 
     SERVER.on('connection', (userSocket, req) => {
+      console.log('client: message service:17');
+      // console.log(userSocket);
       const ip = req.socket.remoteAddress;
-      const uuid = uuid4();
-      userSocket.id = uuid;
-      userSocket.send(JSON.stringify({ event: 'connected', payload: { uuid } }));
-      this.addUser(uuid, userSocket);
-
-      userSocket.on('message', (body) => {
+      userSocket.send(JSON.stringify({ event: 'connected', payload: { uuid: userSocket.id } }));
+      this.addUser(userSocket.id, userSocket);
+      
+      userSocket.on('MESSAGE', (body) => {
+        console.log('payload: message service:23');
+        console.log(body);
         const { event, payload } = JSON.parse(body);
-
         if (event === 'JOIN_CHANNEL'){
           const { channelId, user } = payload;
           this.addUserToChannel(channelId, { ...user, ip, ws: userSocket }, true);
