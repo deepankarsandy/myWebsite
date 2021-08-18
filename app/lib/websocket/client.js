@@ -19,7 +19,7 @@ import EventEmitter from '../../../js/lib/event_emitter.js';
  */
 export default class WSClient {
   constructor(ws, client){
-    this.server = ws;
+    this.ws = ws;
     this.client = client;
     this.event = EventEmitter;
     this.CHANNELS = new Map();
@@ -33,8 +33,9 @@ export default class WSClient {
       this.event.emit('error', err);
     });
 
-    client.on('message', ({ event, data }, isBinary) => {
-      this.event.emit(event, data);
+    client.on('message', (data, isBinary) => {
+      const { event, payload } = JSON.parse(data);
+      this.event.emit(event, payload);
     });
 
     client.on('open', () => {

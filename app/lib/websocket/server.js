@@ -15,7 +15,7 @@ import WSChannel from './channel.js';
 /**
  * WSServer class
  * this is a wrapper around ws server
- * supports channels, clients
+ * supports channels, clients (as nodes)
  * @param {Hash} wsServerOpts WebsocketServer options
  * @see https://github.com/websockets/ws for more props
  * @param {Hash} otherOptions more options [doc TODO]
@@ -40,7 +40,7 @@ export default class WSServer extends WebSocketServer {
       case 'connection':
         super.on('connection', (socket, req) => {
           const client = new WSClient(this, socket);
-          this.clients.add(client.id, client);
+          this.nodes.set(client.id, client);
           cb(client, req);
         });
         break;
@@ -71,15 +71,15 @@ export default class WSServer extends WebSocketServer {
 
   // --------- GETTERS -------
 
-  get _origClients(){
-    return super.clients();
+  get _origNodes(){
+    return super.clients;
   }
 
   get channels(){
     return this.CHANNELS;
   }
 
-  get clients(){
+  get nodes(){
     return this.CLIENTS;
   }
 
@@ -94,7 +94,7 @@ export default class WSServer extends WebSocketServer {
 
   get clientIds(){
     const clIds = new Set();
-    this.clients.forEach((cl) => {
+    this.nodes.forEach((cl) => {
       clIds.add(cl.id);
     });
 

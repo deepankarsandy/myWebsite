@@ -19,8 +19,12 @@ const MessageService = {
       userSocket.send(JSON.stringify({ event: 'connected', payload: { uuid: userSocket.id } }));
       this.addUser(userSocket.id, userSocket);
       
+      userSocket.on('JOIN_CHANNEL', (data) => {
+        console.log('JOIN_CHANNEL');
+        console.log(data);
+      });
       userSocket.on('MESSAGE', (body) => {
-        console.log('payload: message service:23');
+        console.log('MESSAGE: message service:23');
         console.log(body);
         const { event, payload } = JSON.parse(body);
         if (event === 'JOIN_CHANNEL'){
