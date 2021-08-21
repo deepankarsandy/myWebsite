@@ -9,12 +9,21 @@ const ORIG_WS_SERVER_EVENTS = ['close', 'connection', 'error', 'headers', 'liste
 
 const WS_SERVER_EVENTS = [...ORIG_WS_SERVER_EVENTS, 'connect', 'connecting', 'disconnect', 'disconnecting', 'open'];
 
-const ORIG_SOCKET_EVENTS = ['close', 'error', 'message', 'open', 'ping', 'pong', 'unexpected-response', 'upgrade'];
+const ORIG_WS_SOCKET_EVENTS = ['close', 'error', 'message', 'open', 'ping', 'pong', 'unexpected-response', 'upgrade'];
 
-const SOCKET_EVENTS = [...ORIG_SOCKET_EVENTS];
+const WS_SOCKET_EVENTS = [...ORIG_WS_SOCKET_EVENTS];
+
+// custom implementation
+const WS_CLIENT_ACTIONS = {
+  joinChannel:    'JOIN_CHANNEL',
+  leaveChannel:   'LEAVE_CHANNEL',
+  sendToChannels: 'SEND_TO_CHANNELS',
+  sendToClients:  'SEND_TO_CLIENTS'
+};
 
 export {
   STATE_CODE,
   WS_SERVER_EVENTS,
-  SOCKET_EVENTS
+  WS_SOCKET_EVENTS,
+  WS_CLIENT_ACTIONS,
 };
