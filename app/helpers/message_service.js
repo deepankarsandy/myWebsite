@@ -13,53 +13,53 @@ const MessageService = {
     SERVER = server;
 
     SERVER.on('connection', (userSocket, req) => {
-      console.log('client: message service:17');
+      console.log('on connection');
+      console.log('ip: ', req.socket.remoteAddress);
       // console.log(userSocket);
       const ip = req.socket.remoteAddress;
       userSocket.send(JSON.stringify({ event: 'connected', payload: { uuid: userSocket.id } }));
       this.addUser(userSocket.id, userSocket);
-      
+
       userSocket.on('JOIN_CHANNEL', (data) => {
-        console.log('JOIN_CHANNEL');
+        console.log('on JOIN_CHANNEL');
         console.log(data);
+        const { channelId, user } = data;
+        this.addUserToChannel(channelId, { ...user, ip, ws: userSocket }, true);
+
+        const users = this.getChannelUsers(channelId);
+
+        const userData = users.map((u) => ({
+          id:   u.id,
+          name: u.name,
+        }));
+
+        userSocket.send(JSON.stringify({
+          event:   'CHANNEL',
+          payload: { id: channelId, users: userData }
+        }));
       });
-      userSocket.on('MESSAGE', (body) => {
-        console.log('MESSAGE: message service:23');
-        console.log(body);
-        const { event, payload } = JSON.parse(body);
-        if (event === 'JOIN_CHANNEL'){
-          const { channelId, user } = payload;
-          this.addUserToChannel(channelId, { ...user, ip, ws: userSocket }, true);
 
-          const users = this.getChannelUsers(channelId);
+      userSocket.on('LEAVE_CHANNEL', (data) => {
+        console.log('on LEAVE_CHANNEL');
+        console.log(data);
+        const { channelId, user } = data;
+        this.removeUserFromChannel(channelId, { ...user, ws: userSocket }, true);
+      });
 
-          const userData = users.map((u) => ({
-            id:   u.id,
-            name: u.name,
+      userSocket.on('MESSAGE', (data) => {
+        console.log('on MESSAGE');
+        console.log(data);
+        const { event, payload } = JSON.parse(data);
+
+        const { channelId } = payload;
+        const users = this.getChannelUsers(channelId);
+
+        users.forEach((u) => {
+          u.ws.send(JSON.stringify({
+            event,
+            payload
           }));
-
-          userSocket.send(JSON.stringify({
-            event:   'CHANNEL',
-            payload: { id: channelId, users: userData }
-          }));
-        }
-
-        if (event === 'LEAVE_CHANNEL'){
-          const { channelId, user } = payload;
-          this.removeUserFromChannel(channelId, { ...user, ws: userSocket }, true);
-        }
-
-        if (event === 'MESSAGE'){
-          const { channelId } = payload;
-          const users = this.getChannelUsers(channelId);
-
-          users.forEach((u) => {
-            u.ws.send(JSON.stringify({
-              event,
-              payload
-            }));
-          });
-        }
+        });
       });
 
       userSocket.on('close', (err, reason) => {

@@ -4,9 +4,10 @@ modification history
 01a,04jul2021,deepankar created
 */
 
+import Websocket from '../lib/websocket/websocket';
 import EventEmitter from '../lib/event_emitter';
 
-const ws = new WebSocket(`${location.protocol.includes('https') ? 'wss' : 'ws'}://${location.host}`);
+const ws = new Websocket(`${location.protocol.includes('https') ? 'wss' : 'ws'}://${location.host}`);
 let uuid = null;
 const channels = {};
 
@@ -19,7 +20,7 @@ const MessageService = {
     };
     ws.onmessage = (evt) => {
       const { event, payload } = JSON.parse(evt.data);
-
+      console.log('onmessage', evt);
       // console.log(event, payload);
       if (event === 'connected'){
         uuid = payload.uuid;

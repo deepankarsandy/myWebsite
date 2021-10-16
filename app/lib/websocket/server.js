@@ -6,7 +6,6 @@ modification history
 
 import { WebSocketServer } from 'ws';
 import { mergeRight } from 'ramda';
-import EventEmitter from '../../../js/lib/event_emitter.js';
 
 import { STATE_CODE } from './ws_constants.js';
 import WSClient from './client.js';
@@ -30,7 +29,6 @@ export default class WSServer extends WebSocketServer {
 
     const options = mergeRight(defaultOptions, otherOptions);
 
-    // this.event = EventEmitter;
     this.CHANNELS = new Map();
     this.CLIENTS = new Map();
   }
@@ -45,6 +43,8 @@ export default class WSServer extends WebSocketServer {
         });
         break;
       default:
+        // TODO
+        cb({ data: 'TODO' });
         break;
     }
   }

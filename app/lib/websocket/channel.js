@@ -4,8 +4,6 @@ modification history
 01a,04jul2021,deepankar created
 */
 
-import EventEmitter from '../../../js/lib/event_emitter.js';
-
 /**
  * WSCChannel class
  * this is a wrapper around ws client
@@ -21,7 +19,6 @@ export default class WSChannel {
     this.uuid = id;
     this.channelName = name || id;
     this.CLIENTS = new Map();
-    // this.event = EventEmitter;
   }
 
   delete(){

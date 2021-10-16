@@ -7,7 +7,7 @@ modification history
 import { isNil } from 'ramda';
 import { v4 as uuid4 } from 'uuid';
 
-import EventEmitter from '../../../js/lib/event_emitter.js';
+import WSServerEvent from './ws_server_event.js';
 import { WS_SOCKET_EVENTS, WS_CLIENT_ACTIONS } from './ws_constants.js';
 
 /**
@@ -22,7 +22,7 @@ export default class WSClient {
   constructor(ws, client){
     this.ws = ws;
     this.client = client;
-    this.event = EventEmitter;
+    this.event = new WSServerEvent({ prefix: 'WS#' });
     this.CHANNELS = new Map();
     this.BASE_EVENT_CALLBACKS = new Map();
     WS_SOCKET_EVENTS.forEach((e) => {
@@ -138,6 +138,10 @@ export default class WSClient {
   }
 
   on(eventName, cb){
+    console.log('on', eventName);
+    // handle all default events here
+    // exec from BASE_EVENT_CALLBACKS
+    // for rest use `event.on`
     this.event.on(eventName, (...args) => cb && cb(...args));
   }
 
