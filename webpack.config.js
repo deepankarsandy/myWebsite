@@ -23,7 +23,7 @@ export default {
 
   resolve: {
     // extensions that require will resolve.
-    extensions: ['.js', '.jsx', '.js.jsx'],
+    extensions: ['.js', '.jsx', 'ts', 'tsx'],
     // directories to search in for files to resolve.
     modules:    ['node_modules'],
     alias:      {}
@@ -46,6 +46,11 @@ export default {
           fullySpecified: false
         },
         exclude: /(node_modules)/,
+      },
+      {
+        test:    /\.tsx?$/,
+        use:     'babel-loader',
+        exclude: /node_modules/,
       },
       {
         test:    /\.jsx?$/,
