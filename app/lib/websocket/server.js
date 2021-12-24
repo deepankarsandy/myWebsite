@@ -75,14 +75,24 @@ export default class WSServer extends WebSocketServer {
     return super.clients;
   }
 
+  /**
+   *
+   * @type {Map<String|Number, WSChannel>}
+   */
   get channels(){
     return this.CHANNELS;
   }
 
+  /**
+   * @type {Map<String|Number, WSClient>}
+   */
   get nodes(){
     return this.CLIENTS;
   }
 
+  /**
+   * @type {Set<String|Number>}
+   */
   get channelIds(){
     const chIds = new Set();
     this.channels.forEach((ch) => {
@@ -92,6 +102,9 @@ export default class WSServer extends WebSocketServer {
     return chIds;
   }
 
+  /**
+   * @type {Set<String|Number>}
+   */
   get clientIds(){
     const clIds = new Set();
     this.nodes.forEach((cl) => {

@@ -13,7 +13,7 @@ const MessageService = {
     SERVER = server;
 
     SERVER.on('connection', (userSocket, req) => {
-      console.log('on connection');
+      console.log('event: connection');
       console.log('ip: ', req.socket.remoteAddress);
       // console.log(userSocket);
       const ip = req.socket.remoteAddress;
@@ -21,7 +21,7 @@ const MessageService = {
       this.addUser(userSocket.id, userSocket);
 
       userSocket.on('JOIN_CHANNEL', (data) => {
-        console.log('on JOIN_CHANNEL');
+        console.log('event: JOIN_CHANNEL');
         console.log(data);
         const { channelId, user } = data;
         this.addUserToChannel(channelId, { ...user, ip, ws: userSocket }, true);
@@ -40,32 +40,25 @@ const MessageService = {
       });
 
       userSocket.on('LEAVE_CHANNEL', (data) => {
-        console.log('on LEAVE_CHANNEL');
+        console.log('event: LEAVE_CHANNEL');
         console.log(data);
         const { channelId, user } = data;
         this.removeUserFromChannel(channelId, { ...user, ws: userSocket }, true);
       });
 
-      userSocket.on('MESSAGE', (data) => {
-        console.log('on MESSAGE');
-        console.log(data);
-        const { event, payload } = JSON.parse(data);
+      userSocket.on('MESSAGE', (payload) => {
+        console.log('event: MESSAGE');
+        console.log(payload);
+        // const { event, payload } = JSON.parse(payload);
 
         const { channelId } = payload;
         const users = this.getChannelUsers(channelId);
-
         users.forEach((u) => {
           u.ws.send(JSON.stringify({
-            event,
+            event: 'CUSTOM_EVENT',
             payload
           }));
         });
-      });
-
-      userSocket.on('close', (err, reason) => {
-      });
-
-      userSocket.on('error', (err, reason) => {
       });
     });
   },

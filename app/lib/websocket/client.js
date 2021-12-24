@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 /*
 modification history
 --------------------
@@ -22,7 +23,6 @@ export default class WSClient {
   constructor(ws, client){
     this.ws = ws;
     this.client = client;
-    this.event = new WSServerEvent({ prefix: 'WS#' });
     this.CHANNELS = new Map();
     this.BASE_EVENT_CALLBACKS = new Map();
     WS_SOCKET_EVENTS.forEach((e) => {
@@ -31,12 +31,12 @@ export default class WSClient {
     this.uuid = uuid4();
 
     client.on('close', (code, reason) => {
-      // this.event.emit('close', code, reason);
+      // WSServerEvent.emit('close', code, reason);
       this.BASE_EVENT_CALLBACKS.get('close').forEach((cb) => cb(code, reason));
     });
 
     client.on('error', (err) => {
-      // this.event.emit('error', err);
+      // WSServerEvent.emit('error', err);
       this.BASE_EVENT_CALLBACKS.get('error').forEach((cb) => cb(err));
     });
 
@@ -70,7 +70,7 @@ export default class WSClient {
       }
 
       if (event){
-        this.event.emit(event, payload);
+        WSServerEvent.emit(event, payload);
         // this.BASE_EVENT_CALLBACKS.get('open').forEach((cb) => cb(...args));
       }
     });
@@ -80,19 +80,19 @@ export default class WSClient {
     });
 
     client.on('ping', (...args) => {
-      this.event.emit('ping', ...args);
+      WSServerEvent.emit('ping', ...args);
     });
 
     client.on('pong', (...args) => {
-      this.event.emit('pong', ...args);
+      WSServerEvent.emit('pong', ...args);
     });
 
     client.on('unexpected-response', (...args) => {
-      this.event.emit('unexpected-response', ...args);
+      WSServerEvent.emit('unexpected-response', ...args);
     });
 
     client.on('upgrade', (...args) => {
-      this.event.emit('upgrade', ...args);
+      WSServerEvent.emit('upgrade', ...args);
     });
   }
 
@@ -138,16 +138,19 @@ export default class WSClient {
   }
 
   on(eventName, cb){
-    console.log('on', eventName);
+    // console.log('client.js: listen to event: ', eventName);
     // handle all default events here
     // exec from BASE_EVENT_CALLBACKS
     // for rest use `event.on`
-    this.event.on(eventName, (...args) => cb && cb(...args));
+    WSServerEvent.on(eventName, (...args) => cb && cb(...args));
   }
 
   close(code, reason){
-    this.channels.delete(this.id);
-    this.ws.channels.delete(this.id);
+    this.channels.clear();
+    this.ws.channels.forEach((ch) => {
+      ch.leave(this.id);
+    });
+
     return this.client.close(code, reason);
   }
 
@@ -217,6 +220,7 @@ export default class WSClient {
    * @param {Function} cb An optional callback which is invoked when data is written out.
    */
   send(data, options, cb){
+    console.log('client.js send: ', data, options, cb);
     this._send(data, options, cb);
   }
 

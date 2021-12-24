@@ -54,4 +54,4 @@ class WSEvent extends EventEmitter {
   }
 }
 
-export default WSEvent;
+export default new WSEvent({ prefix: 'WS#' });

@@ -15,12 +15,12 @@ const channels = {};
 
 const MessageService = {
   init(){
-    ws.onopen = () => {
-      console.log('connection opened');
-    };
-    ws.onmessage = (evt) => {
-      const { event, payload } = JSON.parse(evt.data);
-      console.log('onmessage', evt);
+    ws.onopen((e) => {
+      console.log('connection opened', e);
+    });
+    ws.onmessage((evt) => {
+      const { event, payload } = JSON.parse(evt);
+      console.log('chat_service.js: onmessage:\n', `event: ${event}`, 'payload: ', payload);
       // console.log(event, payload);
       if (event === 'connected'){
         uuid = payload.uuid;
@@ -35,13 +35,13 @@ const MessageService = {
         channels[payload.id].messages = [];
         EventEmitter.emit(event, payload);
       }
-    };
-    ws.onerror = (err) => {
+    });
+    ws.onerror((err) => {
       console.log('error', err);
-    };
-    ws.onclose = (err) => {
+    });
+    ws.onclose((err) => {
       console.log('close', err);
-    };
+    });
   },
 
   joinChannel(channelId, user){
@@ -65,6 +65,7 @@ const MessageService = {
   messages(channelId){
     return channels[channelId].messages || [];
   },
+
   channels,
 
   getUser(channelId, userId){
