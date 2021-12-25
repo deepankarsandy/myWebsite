@@ -15,9 +15,6 @@ const channels = {};
 
 const MessageService = {
   init(){
-    ws.onopen((e) => {
-      console.log('connection opened', e);
-    });
     ws.onmessage((evt) => {
       const { event, payload } = JSON.parse(evt);
       console.log('chat_service.js: onmessage:\n', `event: ${event}`, 'payload: ', payload);
@@ -35,12 +32,6 @@ const MessageService = {
         channels[payload.id].messages = [];
         EventEmitter.emit(event, payload);
       }
-    });
-    ws.onerror((err) => {
-      console.log('error', err);
-    });
-    ws.onclose((err) => {
-      console.log('close', err);
     });
   },
 

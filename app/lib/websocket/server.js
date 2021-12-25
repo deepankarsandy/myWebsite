@@ -27,7 +27,7 @@ export default class WSServer extends WebSocketServer {
       pingDelay:   30 * 1000,
     };
 
-    const options = mergeRight(defaultOptions, otherOptions);
+    this.options = mergeRight(defaultOptions, otherOptions);
 
     this.CHANNELS = new Map();
     this.CLIENTS = new Map();
@@ -40,6 +40,11 @@ export default class WSServer extends WebSocketServer {
           const client = new WSClient(this, socket);
           this.nodes.set(client.id, client);
           cb(client, req);
+        });
+        break;
+      case 'close':
+        super.on('close', () => {
+          console.log('server closed');
         });
         break;
       default:

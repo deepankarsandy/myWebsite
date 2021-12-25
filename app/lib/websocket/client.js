@@ -22,21 +22,25 @@ import { WS_SOCKET_EVENTS, WS_CLIENT_ACTIONS } from './ws_constants.js';
 export default class WSClient {
   constructor(ws, client){
     this.ws = ws;
-    this.client = client;
+    this._origSocket = client;
     this.CHANNELS = new Map();
     this.BASE_EVENT_CALLBACKS = new Map();
     WS_SOCKET_EVENTS.forEach((e) => {
       this.BASE_EVENT_CALLBACKS.set(e, new Set());
     });
     this.uuid = uuid4();
+    this.isAlive = true;
 
     client.on('close', (code, reason) => {
-      // WSServerEvent.emit('close', code, reason);
+      WSServerEvent.emit('close', code, reason);
+      clearInterval(this.pingInterval);
+      console.log('close', code, reason);
       this.BASE_EVENT_CALLBACKS.get('close').forEach((cb) => cb(code, reason));
     });
 
     client.on('error', (err) => {
       // WSServerEvent.emit('error', err);
+      console.log('error', err);
       this.BASE_EVENT_CALLBACKS.get('error').forEach((cb) => cb(err));
     });
 
@@ -79,13 +83,24 @@ export default class WSClient {
       this.BASE_EVENT_CALLBACKS.get('open').forEach((cb) => cb(...args));
     });
 
-    client.on('ping', (...args) => {
-      WSServerEvent.emit('ping', ...args);
+    client.on('pong', () => {
+      console.log('pong');
+      this.isAlive = true;
+      // WSServerEvent.emit('pong', ...args);
     });
 
-    client.on('pong', (...args) => {
-      WSServerEvent.emit('pong', ...args);
-    });
+    this.pingInterval = setInterval(() => {
+      console.log('is alive?: ', this.isAlive);
+      if (!this.isAlive){
+        console.log('terminated');
+        this.terminate();
+        clearInterval(this.pingInterval);
+        return;
+      }
+
+      this.isAlive = false;
+      this.ping();
+    }, ws.options.pingDelay);
 
     client.on('unexpected-response', (...args) => {
       WSServerEvent.emit('unexpected-response', ...args);
@@ -94,6 +109,12 @@ export default class WSClient {
     client.on('upgrade', (...args) => {
       WSServerEvent.emit('upgrade', ...args);
     });
+  }
+
+  ping(){
+    console.log('ping');
+    this._origSocket.ping();
+    this.send(JSON.stringify({ event: 'ping' }));
   }
 
   /**
@@ -151,7 +172,11 @@ export default class WSClient {
       ch.leave(this.id);
     });
 
-    return this.client.close(code, reason);
+    return this._origSocket.close(code, reason);
+  }
+
+  terminate(){
+    this._origSocket.terminate();
   }
 
   /**
@@ -232,7 +257,7 @@ export default class WSClient {
 
   // ---------internals-------
   _send(data, options, cb){
-    return this.client.send(data, options, cb);
+    return this._origSocket.send(data, options, cb);
   }
 
   // --------- GETTERS -------
@@ -256,5 +281,9 @@ export default class WSClient {
 
   get id(){
     return this.uuid;
+  }
+
+  get _client(){
+    return this._origSocket;
   }
 }

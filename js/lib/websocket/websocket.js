@@ -1,5 +1,5 @@
 /* eslint-disable class-methods-use-this */
-import { mergeRight } from 'ramda';
+import { mergeRight, values } from 'ramda';
 import WSEvent from './ws_event';
 
 const STATE_CODE = {
@@ -41,11 +41,10 @@ export default class Websocket {
     this._socket.onmessage = this._onMessage;
     this._socket.onclose = this._onClose;
     this._socket.onerror = this._onError;
-    // this._socket.on('ping', () => this.heartbeat('ping'));
+    this.on('ping', this.heartbeat);
   }
 
-  heartbeat(who){
-    console.log('heartbeat from', who);
+  heartbeat(){
     clearTimeout(this.heartbeatPingTimer);
 
     // Use `WebSocket#terminate()`, which immediately destroys the connection,
@@ -53,48 +52,101 @@ export default class Websocket {
     // Delay should be equal to the interval at which your server
     // sends out pings plus a conservative assumption of the latency.
     this.heartbeatPingTimer = setTimeout(() => {
+      console.log('closed by heartbeat');
       this.close();
     }, this.options.pingDelay + 1000);
   }
 
   on(eventName, cb){
-    console.log(eventName, 'on');
-    switch (eventName){
-      case 'connection':
-        console.log('connection');
-        // TODO
-        break;
-      default:
-        // TODO
-        cb({ data: 'TODO' });
-        break;
-    }
+    console.log('listening to: ', eventName);
+    WSEvent.on(eventName, cb);
+  }
+
+  onopen(cb){
+    WSEvent.on(EVENTS_DEFAULT.open, cb);
   }
 
   onmessage(cb){
-    // handle custom events here
-    super.onmessage = cb;
+    WSEvent.on(EVENTS_DEFAULT.message, cb);
   }
 
+  onclose(cb){
+    WSEvent.on(EVENTS_DEFAULT.close, cb);
+  }
+
+  onerror(cb){
+    WSEvent.on(EVENTS_DEFAULT.error, cb);
+  }
+
+  // TODO: extend
   send(...args){
-    super.send(...args);
+    this._socket.send(...args);
+  }
+
+  // TODO: extend
+  close(code, reason){
+    this._socket.close(code, reason);
+  }
+
+  /**
+   * @private
+   * @param {Event} evt
+   */
+  _onOpen(evt){
+    this.heartbeat();
+    console.log('connection opened');
+    WSEvent.emit(EVENTS_DEFAULT.open, evt);
+  }
+
+  /**
+   * @private
+   * @param {Event} evt
+   */
+  _onMessage(evt){
+    const { event, payload } = JSON.parse(evt.data);
+    // TODO: handle custom events, actions, etc.
+    if (event){
+      if (values(EVENTS_DEFAULT).includes(event)) throw new Error(`cannot use reserved event: ${event}`);
+
+      console.log(event, 'emitted');
+      WSEvent.emit(event, payload);
+      return;
+    }
+
+    console.log(evt.data);
+    WSEvent.emit(EVENTS_DEFAULT.message, evt.data);
+  }
+
+  /**
+   * @private
+   * @param {Event} evt
+   */
+  _onClose(evt){
+    clearTimeout(this.heartbeatPingTimer);
+    console.log('connection closed', evt);
+    WSEvent.emit(EVENTS_DEFAULT.close, evt);
+  }
+
+  /**
+   * @private
+   * @param {Event} evt
+   */
+  _onError(evt){
+    console.log('connection error', evt);
+    WSEvent.emit(EVENTS_DEFAULT.error, evt);
   }
 
   // --------- GETTERS -------
 
   get readyState(){
-    return this.readyState;
+    return this._socket.readyState;
   }
 
   get state(){
-    return STATE_CODE[this.readyState];
+    return STATE_CODE[this._socket.readyState];
   }
 
   get connected(){
-    return this.readyState === 1;
+    return this._socket.readyState === 1;
   }
-
-  // get originalWs(){
-  //   return this;
-  // }
 }
