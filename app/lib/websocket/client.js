@@ -84,15 +84,13 @@ export default class WSClient {
     });
 
     client.on('pong', () => {
-      console.log('pong');
       this.isAlive = true;
       // WSServerEvent.emit('pong', ...args);
     });
 
     this.pingInterval = setInterval(() => {
-      console.log('is alive?: ', this.isAlive);
       if (!this.isAlive){
-        console.log('terminated');
+        console.log('terminated from heartbeat');
         this.terminate();
         clearInterval(this.pingInterval);
         return;
@@ -112,7 +110,6 @@ export default class WSClient {
   }
 
   ping(){
-    console.log('ping');
     this._origSocket.ping();
     this.send(JSON.stringify({ event: 'ping' }));
   }
@@ -245,7 +242,7 @@ export default class WSClient {
    * @param {Function} cb An optional callback which is invoked when data is written out.
    */
   send(data, options, cb){
-    console.log('client.js send: ', data, options, cb);
+    // console.log('client.js send: ', data, options, cb);
     this._send(data, options, cb);
   }
 

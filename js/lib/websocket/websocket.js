@@ -28,15 +28,18 @@ export default class Websocket {
     };
 
     this.options = mergeRight(defaultOptions, opts);
+    this.url = url;
     this.heartbeatPingTimer = null;
 
     this._onOpen = this._onOpen.bind(this);
+    this._onClose = this._onClose.bind(this);
+    this.heartbeat = this.heartbeat.bind(this);
 
-    this.init(url);
+    this.init();
   }
 
-  init(url){
-    this._socket = new WebSocket(url, this.options.protocol); // TODO: init conditionally
+  init(){
+    this._socket = new WebSocket(this.url, this.options.protocol); // TODO: init conditionally
     this._socket.onopen = this._onOpen;
     this._socket.onmessage = this._onMessage;
     this._socket.onclose = this._onClose;
@@ -47,8 +50,6 @@ export default class Websocket {
   heartbeat(){
     clearTimeout(this.heartbeatPingTimer);
 
-    // Use `WebSocket#terminate()`, which immediately destroys the connection,
-    // instead of `WebSocket#close()`, which waits for the close timer.
     // Delay should be equal to the interval at which your server
     // sends out pings plus a conservative assumption of the latency.
     this.heartbeatPingTimer = setTimeout(() => {
@@ -58,7 +59,7 @@ export default class Websocket {
   }
 
   on(eventName, cb){
-    console.log('listening to: ', eventName);
+    // console.log('listening to: ', eventName);
     WSEvent.on(eventName, cb);
   }
 
@@ -84,7 +85,7 @@ export default class Websocket {
   }
 
   // TODO: extend
-  close(code, reason){
+  close(code = 1000, reason = 'closed by user'){
     this._socket.close(code, reason);
   }
 
@@ -108,7 +109,7 @@ export default class Websocket {
     if (event){
       if (values(EVENTS_DEFAULT).includes(event)) throw new Error(`cannot use reserved event: ${event}`);
 
-      console.log(event, 'emitted');
+      console.log('event emitted: ', event);
       WSEvent.emit(event, payload);
       return;
     }
@@ -125,6 +126,7 @@ export default class Websocket {
     clearTimeout(this.heartbeatPingTimer);
     console.log('connection closed', evt);
     WSEvent.emit(EVENTS_DEFAULT.close, evt);
+    this.init();
   }
 
   /**
