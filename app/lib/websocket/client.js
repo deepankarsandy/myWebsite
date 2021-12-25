@@ -5,7 +5,7 @@ modification history
 01a,04jul2021,deepankar created
 */
 
-import { isNil } from 'ramda';
+import { mergeRight } from 'ramda';
 import { v4 as uuid4 } from 'uuid';
 
 import WSServerEvent from './ws_server_event.js';
@@ -20,9 +20,12 @@ import { WS_SOCKET_EVENTS, WS_CLIENT_ACTIONS } from './ws_constants.js';
  * @example new WSClient(ws, client)
  */
 export default class WSClient {
-  constructor(ws, client){
+  constructor(ws, client, opts){
     this.ws = ws;
     this._origSocket = client;
+    this.options = mergeRight(opts, {});
+    this.name = this.options.name;
+    this.emitter = new WSServerEvent({ prefix: 'WS#' });
     this.CHANNELS = new Map();
     this.BASE_EVENT_CALLBACKS = new Map();
     WS_SOCKET_EVENTS.forEach((e) => {
@@ -31,42 +34,43 @@ export default class WSClient {
     this.uuid = uuid4();
     this.isAlive = true;
 
+    this.join = this.join.bind(this);
+    this.leave = this.leave.bind(this);
+    this.to = this.to.bind(this);
+    this.toClients = this.toClients.bind(this);
+    this.send = this.send.bind(this);
+
     client.on('close', (code, reason) => {
-      WSServerEvent.emit('close', code, reason);
+      this.emitter.emit('close', code, reason);
       clearInterval(this.pingInterval);
       console.log('close', code, reason);
       this.BASE_EVENT_CALLBACKS.get('close').forEach((cb) => cb(code, reason));
     });
 
     client.on('error', (err) => {
-      // WSServerEvent.emit('error', err);
+      // this.emitter.emit('error', err);
       console.log('error', err);
       this.BASE_EVENT_CALLBACKS.get('error').forEach((cb) => cb(err));
     });
 
     client.on('message', (data, isBinary) => {
       const {
-        action, event, payload
+        action, event, payload, actionArgs = {}
       } = JSON.parse(data);
-      let { actionArgs } = JSON.parse(data);
-
-      if (!isNil(actionArgs) && typeof actionArgs !== 'object'){
-        actionArgs = { actionArgs };
-      }
 
       if (action){
         switch (action){
           case WS_CLIENT_ACTIONS.joinChannel:
-            this.join(...actionArgs);
+            this.join(actionArgs);
             break;
           case WS_CLIENT_ACTIONS.leaveChannel:
-            this.leave(...actionArgs);
+            this.leave(actionArgs);
             break;
           case WS_CLIENT_ACTIONS.sendToChannels: // FIX to support multiple channels
-            this.to(...actionArgs);
+            this.to(actionArgs);
             break;
           case WS_CLIENT_ACTIONS.sendToClients:
-            this.to(...actionArgs);
+            this.toClients(actionArgs);
             break;
           default:
             break;
@@ -74,7 +78,8 @@ export default class WSClient {
       }
 
       if (event){
-        WSServerEvent.emit(event, payload);
+        console.log('emitted: ', event);
+        this.emitter.emit(event, payload);
         // this.BASE_EVENT_CALLBACKS.get('open').forEach((cb) => cb(...args));
       }
     });
@@ -85,7 +90,7 @@ export default class WSClient {
 
     client.on('pong', () => {
       this.isAlive = true;
-      // WSServerEvent.emit('pong', ...args);
+      // this.emitter.emit('pong', ...args);
     });
 
     this.pingInterval = setInterval(() => {
@@ -101,11 +106,11 @@ export default class WSClient {
     }, ws.options.pingDelay);
 
     client.on('unexpected-response', (...args) => {
-      WSServerEvent.emit('unexpected-response', ...args);
+      this.emitter.emit('unexpected-response', ...args);
     });
 
     client.on('upgrade', (...args) => {
-      WSServerEvent.emit('upgrade', ...args);
+      this.emitter.emit('upgrade', ...args);
     });
   }
 
@@ -120,19 +125,26 @@ export default class WSClient {
    * @param {Boolean} createChannel creates channel if not present. default true
    * @returns {WSClient} current client
    */
-  join(channelId, createChannel = true){
+  join({ channelId, createChannel = true }){
     let channel;
     if (!this.ws.channels.has(channelId)){
       if (createChannel){
         channel = this.ws.createChannel(channelId);
+        channel.clients.set(this.id, this);
       } else {
         throw new Error(`channel '${channelId}' doesn't exist`);
       }
     } else {
       channel = this.ws.channels.get(channelId);
+      channel.clients.set(this.id, this);
     }
 
-    this.channels.set(channel);
+    this.channels.set(channel.id, channel);
+
+    this.send(JSON.stringify({
+      event:   'CHANNEL',
+      payload: { id: channelId }
+    }));
 
     return this;
   }
@@ -143,7 +155,7 @@ export default class WSClient {
    * @param {String|Number} channelId WSChannel id
    * @returns current client
    */
-  leave(channelId){
+  leave({ channelId }){
     if (this.ws.channels.has(channelId)){
       const channel = this.ws.channels.get(channelId);
 
@@ -156,11 +168,11 @@ export default class WSClient {
   }
 
   on(eventName, cb){
-    // console.log('client.js: listen to event: ', eventName);
+    console.log('client.js: listen to event: ', eventName);
     // handle all default events here
     // exec from BASE_EVENT_CALLBACKS
     // for rest use `event.on`
-    WSServerEvent.on(eventName, (...args) => cb && cb(...args));
+    this.emitter.on(eventName, (...args) => cb && cb(...args));
   }
 
   close(code, reason){
@@ -183,13 +195,14 @@ export default class WSClient {
    * @param {Hash} options
    * @param {Function} cb
    */
-  to(channelId, data, options, cb){
+  to({
+    channelId, data, options, cb
+  }){
     if (!this.channels.has(channelId)){
-      throw new Error(`client not part of channel ${channelId}`);
+      throw new Error(`client ${this.uuid} is not part of channel ${channelId}`);
     }
 
     const channel = this.channels.get(channelId);
-
     channel.clients.forEach((cl, id) => {
       cl.send(data, options);
     });
@@ -206,7 +219,9 @@ export default class WSClient {
    * @param {Hash} options
    * @param {Function} cb
    */
-  toClients(clientIds, data, options, cb){
+  toClients({
+    clientIds, data, options, cb
+  }){
     const clIds = [clientIds].flat();
 
     clIds.forEach((clId) => {

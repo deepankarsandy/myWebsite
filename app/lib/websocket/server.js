@@ -31,6 +31,8 @@ export default class WSServer extends WebSocketServer {
 
     this.CHANNELS = new Map();
     this.CLIENTS = new Map();
+
+    this.createChannel = this.createChannel.bind(this);
   }
 
   on(eventName, cb){
@@ -39,6 +41,7 @@ export default class WSServer extends WebSocketServer {
         super.on('connection', (socket, req) => {
           const client = new WSClient(this, socket);
           this.nodes.set(client.id, client);
+          client.send(JSON.stringify({ event: 'connected', payload: { uuid: client.id } }));
           cb(client, req);
         });
         break;

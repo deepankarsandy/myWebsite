@@ -19,6 +19,11 @@ export default class WSChannel {
     this.uuid = id;
     this.channelName = name || id;
     this.CLIENTS = new Map();
+
+    this.delete = this.delete.bind(this);
+    this.join = this.join.bind(this);
+    this.remove = this.remove.bind(this);
+    this.send = this.send.bind(this);
   }
 
   delete(){

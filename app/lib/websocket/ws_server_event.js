@@ -6,7 +6,7 @@ modification history
 
 import EventEmitter from 'eventemitter3';
 
-class WSEvent extends EventEmitter {
+class WSServerEvent extends EventEmitter {
   constructor(props){
     super(props);
 
@@ -54,4 +54,4 @@ class WSEvent extends EventEmitter {
   }
 }
 
-export default new WSEvent({ prefix: 'WS#' });
+export default WSServerEvent;

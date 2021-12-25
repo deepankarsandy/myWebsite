@@ -8,7 +8,6 @@ import Websocket from '../lib/websocket/websocket';
 import EventEmitter from '../lib/event_emitter';
 
 const ws = new Websocket(`${location.protocol.includes('https') ? 'wss' : 'ws'}://${location.host}`);
-let uuid = null;
 const channels = {};
 
 // global.debug = channels;
@@ -19,10 +18,7 @@ const MessageService = {
       const { event, payload } = JSON.parse(evt);
       console.log('chat_service.js: onmessage:\n', `event: ${event}`, 'payload: ', payload);
       // console.log(event, payload);
-      if (event === 'connected'){
-        uuid = payload.uuid;
-      }
-      if (event === 'MESSAGE'){
+      if (event === 'ON_MESSAGE'){
         payload.createdAt = new Date();
         channels[payload.channelId].messages.push(payload);
         EventEmitter.emit(event);
@@ -37,20 +33,20 @@ const MessageService = {
 
   joinChannel(channelId, user){
     ws.send(JSON.stringify({
-      event:   'JOIN_CHANNEL',
-      payload: { channelId, user: { id: uuid, ...user } }
+      action:     'JOIN_CHANNEL',
+      actionArgs: { channelId, user: { id: ws.id, ...user } }
     }));
   },
 
   leaveChannel(channelId, user){
     ws.send(JSON.stringify({
-      event:   'LEAVE_CHANNEL',
-      payload: { channelId, user: { id: uuid, ...user } }
+      action:     'LEAVE_CHANNEL',
+      actionArgs: { channelId, user: { id: ws.id, ...user } }
     }));
   },
 
   send(channelId, text){
-    ws.send(JSON.stringify({ event: 'MESSAGE', payload: { channelId, userId: uuid, text } }));
+    ws.send(JSON.stringify({ event: 'ON_MESSAGE', payload: { channelId, text } }));
   },
 
   messages(channelId){
@@ -58,12 +54,6 @@ const MessageService = {
   },
 
   channels,
-
-  getUser(channelId, userId){
-    const channel = channels[channelId] || { users: [] };
-
-    return channel.users.find((u) => u.id === userId);
-  }
 };
 
 export default MessageService;

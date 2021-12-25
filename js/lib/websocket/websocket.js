@@ -10,10 +10,11 @@ const STATE_CODE = {
 };
 
 const EVENTS_DEFAULT = {
-  message: 'MESSAGE',
-  open:    'OPEN',
-  close:   'CLOSE',
-  error:   'ERROR',
+  message:   'MESSAGE',
+  open:      'OPEN',
+  close:     'CLOSE',
+  error:     'ERROR',
+  reconnect: 'RECONNECT',
 };
 
 /**
@@ -25,26 +26,30 @@ export default class Websocket {
     const defaultOptions = {
       reconnect:   true,
       pingDelay:   30 * 1000,
+      autoConnect: true,
     };
 
     this.options = mergeRight(defaultOptions, opts);
     this.url = url;
     this.heartbeatPingTimer = null;
+    this.id = null;
 
     this._onOpen = this._onOpen.bind(this);
     this._onClose = this._onClose.bind(this);
     this.heartbeat = this.heartbeat.bind(this);
+    this.onConnected = this.onConnected.bind(this);
 
-    this.init();
+    this.options.autoConnect && this.connect();
   }
 
-  init(){
-    this._socket = new WebSocket(this.url, this.options.protocol); // TODO: init conditionally
+  connect(){
+    this._socket = new WebSocket(this.url, this.options.protocol);
     this._socket.onopen = this._onOpen;
     this._socket.onmessage = this._onMessage;
     this._socket.onclose = this._onClose;
     this._socket.onerror = this._onError;
     this.on('ping', this.heartbeat);
+    this.on('connected', this.onConnected);
   }
 
   heartbeat(){
@@ -56,6 +61,10 @@ export default class Websocket {
       console.log('closed by heartbeat');
       this.close();
     }, this.options.pingDelay + 1000);
+  }
+
+  onConnected(data){
+    this.id = data.uuid;
   }
 
   on(eventName, cb){
@@ -111,7 +120,6 @@ export default class Websocket {
 
       console.log('event emitted: ', event);
       WSEvent.emit(event, payload);
-      return;
     }
 
     console.log(evt.data);
@@ -126,7 +134,11 @@ export default class Websocket {
     clearTimeout(this.heartbeatPingTimer);
     console.log('connection closed', evt);
     WSEvent.emit(EVENTS_DEFAULT.close, evt);
-    this.init();
+
+    if (this.options.reconnect){
+      this.connect();
+      WSEvent.emit(EVENTS_DEFAULT.reconnect);
+    }
   }
 
   /**

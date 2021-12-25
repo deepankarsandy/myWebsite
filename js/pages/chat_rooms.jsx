@@ -27,7 +27,7 @@ export default class ChatRooms extends PureComponent {
     this.joinChannel = this.joinChannel.bind(this);
     this.onNewMessage = this.onNewMessage.bind(this);
 
-    EventEmitter.on('MESSAGE', this.onNewMessage);
+    EventEmitter.on('ON_MESSAGE', this.onNewMessage);
     EventEmitter.on('CHANNEL', (channel) => {
       this.setState({ channel });
     });
@@ -98,7 +98,7 @@ export default class ChatRooms extends PureComponent {
                     <div key={i} className="content">
                       <div className="subtitle is-6 mb-1">{message.text}</div>
                       <div className="subtitle is-7 has-text-grey mr-4">
-                        <span className="mr-4">{ChatService.getUser(channelId, message.userId)?.name}</span>
+                        <span className="mr-4">{message.userName}</span>
                         <span>{dayjs(message.createdAt).format('hh:mmA')}</span>
                       </div>
                     </div>
