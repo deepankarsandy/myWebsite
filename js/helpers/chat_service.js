@@ -9,29 +9,33 @@ import EventEmitter from '../lib/event_emitter';
 
 const ws = new Websocket(`${location.protocol.includes('https') ? 'wss' : 'ws'}://${location.host}`);
 const channels = {};
+const channelIds = new Set();
 
 // global.debug = channels;
 
 const MessageService = {
   init(){
-    ws.onmessage((evt) => {
-      const { event, payload } = JSON.parse(evt);
-      console.log('chat_service.js: onmessage:\n', `event: ${event}`, 'payload: ', payload);
-      // console.log(event, payload);
-      if (event === 'ON_MESSAGE'){
-        payload.createdAt = new Date();
-        channels[payload.channelId].messages.push(payload);
-        EventEmitter.emit(event);
-      }
-      if (event === 'CHANNEL'){
-        channels[payload.id] = payload;
-        channels[payload.id].messages = [];
-        EventEmitter.emit(event, payload);
-      }
+    ws.on('ON_MESSAGE', (payload) => {
+      payload.createdAt = new Date();
+      channels[payload.channelId].messages.push(payload);
+      EventEmitter.emit('NEW_MESSAGE');
+    });
+    ws.on('CHANNEL', (payload) => {
+      channels[payload.id] = payload;
+      channels[payload.id].messages = [];
+      EventEmitter.emit('CHANNEL_CREATED', payload);
+    });
+
+    ws.on('RECONNECT', () => {
+      channelIds.forEach((id) => {
+        this.joinChannel(id);
+      });
     });
   },
 
   joinChannel(channelId, user){
+    channelIds.add(channelId);
+
     ws.send(JSON.stringify({
       action:     'JOIN_CHANNEL',
       actionArgs: { channelId, user: { id: ws.id, ...user } }

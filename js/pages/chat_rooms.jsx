@@ -27,8 +27,8 @@ export default class ChatRooms extends PureComponent {
     this.joinChannel = this.joinChannel.bind(this);
     this.onNewMessage = this.onNewMessage.bind(this);
 
-    EventEmitter.on('ON_MESSAGE', this.onNewMessage);
-    EventEmitter.on('CHANNEL', (channel) => {
+    EventEmitter.on('NEW_MESSAGE', this.onNewMessage);
+    EventEmitter.on('CHANNEL_CREATED', (channel) => {
       this.setState({ channel });
     });
   }

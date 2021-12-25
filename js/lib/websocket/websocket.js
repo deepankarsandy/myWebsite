@@ -37,19 +37,26 @@ export default class Websocket {
     this._onOpen = this._onOpen.bind(this);
     this._onClose = this._onClose.bind(this);
     this.heartbeat = this.heartbeat.bind(this);
+    this.connect = this.connect.bind(this);
     this.onConnected = this.onConnected.bind(this);
+    this.on = this.on.bind(this);
 
     this.options.autoConnect && this.connect();
   }
 
   connect(){
-    this._socket = new WebSocket(this.url, this.options.protocol);
-    this._socket.onopen = this._onOpen;
-    this._socket.onmessage = this._onMessage;
-    this._socket.onclose = this._onClose;
-    this._socket.onerror = this._onError;
-    this.on('ping', this.heartbeat);
-    this.on('connected', this.onConnected);
+    return new Promise((resolve, reject) => {
+      this._socket = new WebSocket(this.url, this.options.protocol);
+      this._socket.onopen = this._onOpen;
+      this._socket.onmessage = this._onMessage;
+      this._socket.onclose = this._onClose;
+      this._socket.onerror = this._onError;
+      this.on('ping', this.heartbeat);
+      this.on('connected', (data) => {
+        this.onConnected(data);
+        resolve();
+      });
+    });
   }
 
   heartbeat(){
@@ -132,12 +139,13 @@ export default class Websocket {
    */
   _onClose(evt){
     clearTimeout(this.heartbeatPingTimer);
-    console.log('connection closed', evt);
+    console.log('connection closed');
     WSEvent.emit(EVENTS_DEFAULT.close, evt);
 
     if (this.options.reconnect){
-      this.connect();
-      WSEvent.emit(EVENTS_DEFAULT.reconnect);
+      this.connect().then(() => {
+        WSEvent.emit(EVENTS_DEFAULT.reconnect);
+      });
     }
   }
 
