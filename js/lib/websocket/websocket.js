@@ -144,6 +144,9 @@ export default class Websocket {
 
     if (this.options.reconnect){
       this.connect().then(() => {
+        // TODO: keep same user id on reconnect
+        // (create separate user and id to socket id and instance)
+        // to keep messages on UI.
         WSEvent.emit(EVENTS_DEFAULT.reconnect);
       });
     }
