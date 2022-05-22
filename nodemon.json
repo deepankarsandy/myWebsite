@@ -1,0 +1,8 @@
+{
+  "verbose": true,
+  "ignore": ["*.test.js", "fixtures/*", "dist/*", "ui/*", "css/*", "node_modules/*", ".git"],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "delay": "2000"
+}
