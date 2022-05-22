@@ -5,3 +5,5 @@ dist/*
 !dist/*.html
 .env
 app/ssl
+app/credentials/master.key
+tmp
