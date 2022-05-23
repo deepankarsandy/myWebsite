@@ -1,6 +1,7 @@
 /*
 modification history
 --------------------
+01b,23may2022,deepankar added camera module
 01a,09aug2020,deepankar created
 */
 
@@ -18,6 +19,7 @@ const Home = loadable(() => import('./pages/home'), { fallback });
 const Covid19 = loadable(() => import('./pages/covid19'), { fallback });
 const About = loadable(() => import('./pages/about'), { fallback });
 const ChatRooms = loadable(() => import('./pages/chat_rooms'), { fallback });
+const Camera = loadable(() => import('./pages/camera'), { fallback });
 const NoContent = loadable(() => import('./components/no_content'), { fallback });
 
 function NoRouteMatch(){
@@ -54,6 +56,11 @@ export default class Index extends PureComponent {
               path="/chat-rooms"
               exact
               render={(props) => <ChatRooms {...props} />}
+            />
+            <Route
+              path="/camera"
+              exact
+              render={(props) => <Camera {...props} />}
             />
             <Route path="/:other" component={NoRouteMatch} />
           </Switch>

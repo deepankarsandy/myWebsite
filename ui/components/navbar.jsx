@@ -1,6 +1,7 @@
 /*
 modification history
 --------------------
+01b,23may2022,deepankar added camera module
 01a,09aug2020,deepankar created
 */
 
@@ -74,6 +75,9 @@ export default class Navbar extends PureComponent {
           </NavLink>
           <NavLink to="/chat-rooms" className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold">
             <span>Chat Rooms</span>
+          </NavLink>
+          <NavLink to="/camera" className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold">
+            <span>Mirror</span>
           </NavLink>
         </div>
 
