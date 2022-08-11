@@ -31,8 +31,10 @@ export default {
 
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: false,
-      __dirname
+      __DEV__:  false,
+      __dirname,
+      NODE_ENV: 'production',
+      env:      'production',
     })
   ],
 

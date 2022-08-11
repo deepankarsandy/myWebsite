@@ -11,7 +11,7 @@ export default {
   context: __dirname,
 
   entry:   {
-    home:     ['@babel/polyfill', './js/index.jsx'],
+    home:     ['@babel/polyfill', './ui/index.jsx'],
     home_css: ['./css/home.scss'],
   },
 
@@ -33,8 +33,10 @@ export default {
 
   plugins: [
     new webpack.DefinePlugin({
-      __DEV__: true,
-      __dirname
+      __DEV__:  true,
+      __dirname,
+      NODE_ENV: 'development',
+      env:      'development',
     })
   ],
 
