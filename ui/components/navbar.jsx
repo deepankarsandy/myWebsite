@@ -12,6 +12,8 @@ import classNames from 'classnames';
 import { map } from 'ramda';
 
 import isPresent from '../helpers/isPresent';
+import Button from './button';
+import { getRedirectUrl } from '../helpers/navigation';
 
 export default class Navbar extends PureComponent {
   constructor(props){
@@ -24,6 +26,11 @@ export default class Navbar extends PureComponent {
   scrollToTop(){
     window.scrollTo(0, 0);
   }
+
+  handleNavClick(target) {
+    const redirectUrl = getRedirectUrl(target);
+    window.open(redirectUrl, "_blank")
+  };
 
   render(){
     const {
@@ -79,6 +86,17 @@ export default class Navbar extends PureComponent {
           <NavLink to="/camera" className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold">
             <span>Mirror</span>
           </NavLink>
+          <Button
+            onClick={() => this.handleNavClick("media")}
+            label="Media"
+            bare
+            className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold"
+          />
+          <Button
+            onClick={() => this.handleNavClick("photo")}
+            label="Photo"
+            bare
+            className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold" />
         </div>
 
         <div className="navbar-end">
