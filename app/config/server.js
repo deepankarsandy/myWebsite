@@ -37,7 +37,7 @@ const fastify = fastifyBuilder({
 });
 
 const start = async () => {
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 5000;
   try {
     await fastify.listen(PORT, '0.0.0.0');
     fastify.log.info(`server listening on port ${PORT}`);

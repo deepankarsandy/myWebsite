@@ -1,11 +1,7 @@
-import path, { dirname } from 'path';
-import webpack from 'webpack';
-import { fileURLToPath } from 'url';
+const webpack = require('webpack');
+const path = require('path');
 
-// eslint-disable-next-line no-underscore-dangle
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-export default {
+module.exports = {
   mode:    'development',
   devtool: 'eval-source-map',
   context: __dirname,

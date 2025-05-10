@@ -58,7 +58,7 @@
     "babel-eslint": "^10.1.0",
     "babel-loader": "^8.2.2",
     "babel-plugin-add-module-exports": "^1.0.4",
-    "babel-plugin-ramda": "^2.0.0",
+    "babel-plugin-ramda": "^2.1.1",
     "babel-plugin-root-import": "^6.6.0",
     "babel-plugin-transform-imports": "^2.0.0",
     "babel-plugin-transform-react-jsx-source": "^6.22.0",
@@ -74,9 +74,9 @@
     "extract-loader": "^5.1.0",
     "file-loader": "^6.0.0",
     "mini-css-extract-plugin": "^2.1.0",
-    "node-sass": "^7.0.0",
     "nodemon": "^2.0.15",
     "postcss-loader": "^6.1.1",
+    "sass": "^1.87.0",
     "sass-loader": "^12.1.0",
     "serve-static": "^1.14.1",
     "style-loader": "^3.2.1",
@@ -91,13 +91,12 @@
     "start": "nodemon -L app/config/server",
     "server": "nodemon -L app/config/server",
     "test": "jest",
-    "wp": "webpack --progress",
-    "wp:watch": "webpack --progress --watch",
-    "wp:prod": "webpack --progress --config webpack.production.config.js",
-    "build": "NODE_ENV=production webpack --config webpack.production.config.js"
+    "wp": "NODE_OPTIONS=--openssl-legacy-provider webpack --progress",
+    "wp:watch": "NODE_OPTIONS=--openssl-legacy-provider webpack --progress --watch",
+    "wp:prod": "NODE_OPTIONS=--openssl-legacy-provider webpack --progress --config webpack.production.config.js",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider NODE_ENV=production webpack --config webpack.production.config.js"
   },
   "engines": {
-    "node": "14.x",
     "npm": ">=6.14.6",
     "yarn": ">=1.19.x"
   }
