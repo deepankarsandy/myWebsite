@@ -4,6 +4,7 @@ const path = require('path');
 module.exports = {
   mode:    'production',
   context: __dirname,
+
   entry:   {
     home:     ['@babel/polyfill', './ui/index.jsx'],
     home_css: ['./css/home.scss'],
@@ -17,10 +18,10 @@ module.exports = {
 
   resolve: {
     // extensions that require will resolve.
-    extensions:         ['.js', '.jsx', '.js.jsx'],
+    extensions: ['.js', '.jsx', 'ts', 'tsx'],
     // directories to search in for files to resolve.
-    modules:            ['node_modules'],
-    alias:              {}
+    modules:    ['node_modules'],
+    alias:      {}
   },
 
   externals: {},
@@ -44,9 +45,18 @@ module.exports = {
         exclude: /(node_modules)/,
       },
       {
+        test:    /\.tsx?$/,
+        use:     'babel-loader',
+        exclude: /node_modules/,
+      },
+      {
         test:    /\.jsx?$/,
         use:     'babel-loader',
         exclude: /(node_modules)/
+      },
+      {
+        test: /\.css$/,
+        use:  ['style-loader', 'css-loader']
       },
       {
         test: /\.scss$/i,
