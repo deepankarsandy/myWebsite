@@ -77,15 +77,6 @@ export default class Navbar extends PureComponent {
               )}
             </span>
           )}
-          <NavLink to="/covid19" className="navbar-link navbar-topic quick-nav-label is-arrowless has-text-weight-bold has-text-warning">
-            <span>COVID 19</span>
-          </NavLink>
-          <NavLink to="/chat-rooms" className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold">
-            <span>Chat Rooms</span>
-          </NavLink>
-          <NavLink to="/camera" className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold">
-            <span>Mirror</span>
-          </NavLink>
           <Button
             onClick={() => this.handleNavClick("media")}
             label="Media"
@@ -106,8 +97,11 @@ export default class Navbar extends PureComponent {
               More
             </span>
             <div className="navbar-dropdown is-right">
-              <NavLink className="navbar-item" to="/" exact activeClassName="disabled">Home</NavLink>
-              <NavLink className="navbar-item" to="/about" activeClassName="disabled">About</NavLink>
+              <NavLink to="/covid19" className="navbar-item">COVID 19</NavLink>
+              <NavLink to="/chat-rooms" className="navbar-item">Chat Rooms</NavLink>
+              <NavLink to="/camera" className="navbar-item">Mirror</NavLink>
+              <NavLink to="/" className="navbar-item" exact activeClassName="disabled">Home</NavLink>
+              <NavLink to="/about" className="navbar-item" activeClassName="disabled">About</NavLink>
             </div>
           </span>
         </div>
