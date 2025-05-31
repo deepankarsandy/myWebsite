@@ -6,11 +6,13 @@ export function getRedirectUrl(target) {
 
   if (isLocalhostWithPort) {
     if (target === 'photo') return `${protocol}//localhost:3000`;
+    if (target === 'gallery') return `${protocol}//localhost:2283`;
     if (target === 'media') return `${protocol}//localhost:8080/media`;
   } else {
-    if (target === 'photo') return '/photo';
+    if (target === 'photo') return `http://${hostname}:2283`;
+    if (target === 'gallery') return `http://${hostname}:2283`;
     if (target === 'media') return '/media';
   }
 
-  return '/'; // fallback
+  return `/${target}`; // fallback
 }
