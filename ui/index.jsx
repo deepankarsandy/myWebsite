@@ -11,6 +11,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import loadable from '@loadable/component';
 
 import Loading from './components/loading';
+import { isLocal } from './helpers/navigation';
 
 const fallback = <Loading className="page-loading" />;
 
@@ -34,7 +35,7 @@ export default class Index extends PureComponent {
   render(){
     return (
       <section className="app-root">
-        <Router>
+        <Router basename={isLocal() ? "/" : "/site"}>
           <Navbar />
           <Switch>
             <Route
