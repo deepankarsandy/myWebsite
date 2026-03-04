@@ -100,11 +100,6 @@ export default class Navbar extends PureComponent {
               <NavLink to="/covid19" className="navbar-item">COVID 19</NavLink>
               <NavLink to="/chat-rooms" className="navbar-item">Chat Rooms</NavLink>
               <NavLink to="/camera" className="navbar-item">Mirror</NavLink>
-              <Button
-                onClick={() => this.handleNavClick("photo")}
-                label="Photo"
-                bare
-                className="navbar-link navbar-topic has-text-blue quick-nav-label is-arrowless has-text-weight-bold" />
               <NavLink to="/" className="navbar-item" exact activeClassName="disabled">Home</NavLink>
               <NavLink to="/about" className="navbar-item" activeClassName="disabled">About</NavLink>
             </div>

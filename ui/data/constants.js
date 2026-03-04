@@ -18,7 +18,7 @@ const Me = {
   nickname:  'Sandy',
   jobTitle:  'Fullstack Web Developer | React Native Developer',
   company:   'Tikkl, Inc',
-  email:     'info@deepankar.dev',
+  email:     'zilu2deep+comm@gmail.com',
   dob:       new Date('09-02-1995'),
   about:     'Currently working as Software Engineer. Love new technologies. Lately interested in modern history and world politics. Love to ride bike. Love greenery and I do gardening.',
   skills:    'ReactJS | React Native | HTML5 | CSS3 | NodeJS | UNIX',
@@ -28,7 +28,7 @@ const Me = {
     youtube:   { url: 'https://www.youtube.com/channel/UCOWnHB_2DxTw9SVxv0LSbvQ' },
     instagram: { url: 'https://instagram.com/deepankar_sandy', disabled: true },
     github:    { url: 'https://github.com/DeepankarSandy' },
-    email:     { url: 'info@deepankar.dev', disabled: true },
+    email:     { url: 'zilu2deep+comm@gmail.com', disabled: true },
     linkedIn:  { url: 'https://www.linkedin.com/in/deepankarsandhibigraha/' },
   },
   projects:  [

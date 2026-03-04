@@ -82,42 +82,11 @@ export default class Home extends PureComponent {
         <section className="hero is-dark is-bold is-fullheight-with-navbar root">
           <main className="hero-body">
             <div className="container has-text-centered">
-              <h1 className="title is-uppercase">{Me.jobTitle}</h1>
+              <h1 className="title is-uppercase">Comming Soon...</h1>
               <hr />
-              <h2 className="subtitle is-capitalized">Build a lasting impression for customers</h2>
+              <h2 className="subtitle is-capitalized">Site under construction</h2>
             </div>
           </main>
-        </section>
-        {/* About */}
-        <section className="hero is-primary is-bold  is-fullheight-with-navbar root section">
-          <header className="hero-head">
-            <h1 className="title">ABOUT</h1>
-            <hr style={{ width: '2rem' }} />
-            <h2 className="subtitle">{Me.about}</h2>
-          </header>
-        </section>
-        {/* Skills */}
-        <section className="hero is-primary is-bold  is-fullheight-with-navbar root section">
-          <header className="hero-head">
-            <div className="is-pulled-right">
-              <h1 className="title">SKILLS</h1>
-              <hr style={{ width: '2rem' }} />
-              <h2 className="subtitle has-text-right">{Me.skills}</h2>
-            </div>
-          </header>
-        </section>
-        {/* Work */}
-        <section className="hero is-primary is-bold  is-fullheight-with-navbar root section">
-          <div className="hero-head">
-            <h1 className="title">PROJECTS</h1>
-            <hr style={{ width: '2rem' }} />
-            {Me.projects.map((skill) => (
-              <div key={skill.id} className="title">
-                <h2 className="title is-4 is-marginless">{skill.title}</h2>
-                <span className="subtitle is-6">{skill.description}</span>
-              </div>
-            ))}
-          </div>
         </section>
         {/* Footer */}
         <footer className="footer">
